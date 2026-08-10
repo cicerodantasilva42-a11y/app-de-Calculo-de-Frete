@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICMS Frete · Pauta Fiscal Rodoviária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F0E4;
+    --paper-2:#ECE5D2;
+    --card:#FFFDF7;
+    --ink:#211F17;
+    --ink-soft:#5B564A;
+    --line:#D8CFB6;
+    --line-strong:#B8AC87;
+    --primary:#123B4C;
+    --primary-2:#1E5A70;
+    --gold:#9C7A2E;
+    --gold-soft:#EFE3C0;
+    --red:#8F3327;
+    --red-soft:#F4E1DC;
+    --green:#2B6B4C;
+    --green-soft:#DEEBE1;
+    --radius:4px;
+    --shadow: 0 1px 2px rgba(33,31,23,0.06), 0 4px 14px rgba(33,31,23,0.05);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(33,31,23,0.035) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .serif{font-family:'Source Serif 4', serif;}
+
+  /* ---------- Letterhead ---------- */
+  header.letterhead{
+    background:linear-gradient(180deg, var(--primary) 0%, #0F3140 100%);
+    color:#F4F0E4;
+    padding:22px 28px 0 28px;
+    border-bottom:3px solid var(--gold);
+  }
+  .letterhead-top{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .seal-emblem{flex:none;width:52px;height:52px;}
+  .letterhead-text h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:600;
+    font-size:22px;
+    margin:0 0 2px 0;
+    letter-spacing:0.2px;
+  }
+  .letterhead-text p{
+    margin:0;
+    font-size:12.5px;
+    color:#C9D8DE;
+    letter-spacing:0.3px;
+  }
+  .letterhead-text p .in-tag{
+    color:#F0D48A;
+    font-weight:600;
+  }
+  nav.tabs{
+    max-width:1180px;
+    margin:16px auto 0 auto;
+    display:flex;
+    gap:2px;
+  }
+  nav.tabs button{
+    background:rgba(244,240,228,0.06);
+    border:1px solid rgba(244,240,228,0.18);
+    border-bottom:none;
+    color:#D9E3E6;
+    padding:9px 18px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    border-radius:5px 5px 0 0;
+    transition:background .15s, color .15s;
+  }
+  nav.tabs button:hover{background:rgba(244,240,228,0.12);}
+  nav.tabs button.active{
+    background:var(--paper);
+    color:var(--primary);
+    font-weight:600;
+    border-color:var(--paper);
+  }
+
+  main{max-width:1180px;margin:0 auto;padding:26px 28px 70px 28px;}
+  .tabpanel{display:none;}
+  .tabpanel.active{display:block;}
+
+  /* ---------- Layout grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns: 1.05fr 1.3fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width:920px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+  .card-head{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .card-head h2{
+    font-family:'Source Serif 4', serif;
+    font-size:15px;
+    font-weight:600;
+    margin:0;
+    color:var(--primary);
+  }
+  .card-head .eyebrow{
+    font-size:10.5px;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .card-body{padding:16px;}
+  .card-body.tight{padding:10px 16px 16px 16px;}
+
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;}
+  .field-row.btn-row-3{grid-template-columns:1.5fr 1fr 1fr;}
+  @media (max-width:560px){ .field-row.btn-row-3{grid-template-columns:1fr;} }
+  .field-row.row-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:700px){ .field-row.row-3{grid-template-columns:1fr;} }
+  .field-row.single{grid-template-columns:1fr;}
+  .field{display:flex; flex-direction:column; gap:5px;}
+  .field label{
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--ink-soft);
+    letter-spacing:0.15px;
+  }
+  .field label .req{color:var(--red);}
+  .field input[type=text], .field input[type=number], .field select{
+    border:1px solid var(--line-strong);
+    background:#FEFDF9;
+    border-radius:3px;
+    padding:8px 9px;
+    font-size:13.5px;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    width:100%;
+  }
+  .field input:focus, .field select:focus{
+    outline:2px solid var(--primary-2);
+    outline-offset:1px;
+    border-color:var(--primary-2);
+  }
+  .field .hint{font-size:10.8px; color:var(--ink-soft); opacity:0.85;}
+  gmp-place-autocomplete{
+    width:100%;
+    --gmp-place-autocomplete-input-padding: 8px 9px;
+    --gmp-place-autocomplete-font-size: 13.5px;
+    --gmp-place-autocomplete-font-family: 'IBM Plex Sans', sans-serif;
+    --gmp-place-autocomplete-border-radius: 3px;
+  }
+  .custom-dropdown{
+    display:none;
+    position:absolute;
+    left:0; right:0; top:100%;
+    margin-top:1px;
+    background:#FEFDF9;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    box-shadow:var(--shadow);
+    max-height:260px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .custom-dropdown.open{display:block;}
+  .custom-dropdown .opt{
+    padding:8px 10px;
+    font-size:13px;
+    cursor:pointer;
+    border-bottom:1px solid var(--line);
+  }
+  .custom-dropdown .opt:last-child{border-bottom:none;}
+  .custom-dropdown .opt:hover, .custom-dropdown .opt.active{
+    background:var(--gold-soft);
+  }
+  .custom-dropdown .opt b{color:var(--primary);}
+  .field .detected{
+    font-size:12px;
+    margin-top:2px;
+    color:var(--primary);
+    font-weight:600;
+  }
+
+  .seg{
+    display:flex;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .seg button{
+    flex:1;
+    border:none;
+    background:#FEFDF9;
+    padding:8px 8px;
+    font-size:12px;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-right:1px solid var(--line);
+  }
+  .seg button:last-child{border-right:none;}
+  .seg button.on{
+    background:var(--primary);
+    color:#F4F0E4;
+    font-weight:600;
+  }
+
+  hr.rule{border:none; border-top:1px solid var(--line); margin:14px 0;}
+
+  /* ---------- Results ---------- */
+  .kpi-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:4px;}
+  .kpi{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:10px 12px;
+  }
+  .kpi .l{font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; color:var(--ink-soft); font-weight:600;}
+  .kpi .v{font-family:'IBM Plex Mono', monospace; font-size:17px; font-weight:600; color:var(--primary); margin-top:3px;}
+
+  table.calc{width:100%; border-collapse:collapse; font-size:12.8px;}
+  table.calc td{padding:6px 4px; border-bottom:1px dashed var(--line);}
+  table.calc tr:last-child td{border-bottom:none;}
+  table.calc td.lbl{color:var(--ink-soft);}
+  table.calc td.val{text-align:right; font-family:'IBM Plex Mono', monospace; font-weight:600; white-space:nowrap;}
+  table.calc tr.total td{font-weight:700; color:var(--primary); border-top:1px solid var(--line-strong); padding-top:9px;}
+  table.calc tr.sub td{padding-left:14px; color:var(--ink-soft); font-style:italic;}
+
+  .panel-compare{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:600px){ .panel-compare{grid-template-columns:1fr;} }
+  .panel-compare .col-head{
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+    color:var(--primary-2);
+    margin-bottom:6px;
+    padding-bottom:6px;
+    border-bottom:2px solid var(--gold-soft);
+  }
+
+  .bar-wrap{margin-top:8px;}
+  .bar-track{background:var(--paper-2); border:1px solid var(--line); border-radius:20px; height:10px; overflow:hidden;}
+  .bar-fill{height:100%; background:linear-gradient(90deg, var(--primary-2), var(--primary)); border-radius:20px;}
+  .bar-label{display:flex; justify-content:space-between; font-size:11px; color:var(--ink-soft); margin-top:4px;}
+
+  .note{
+    font-size:12px;
+    background:var(--gold-soft);
+    border:1px solid #DCC888;
+    border-radius:3px;
+    padding:8px 10px;
+    color:#5B4A1B;
+    margin-top:10px;
+  }
+  .note.alert{background:var(--red-soft); border-color:#D9B3AA; color:#6B241A;}
+  .note.ok{background:var(--green-soft); border-color:#B6D2BF; color:#1F4A34;}
+
+  /* ---------- Seal ---------- */
+  .seal-zone{display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap; padding:18px 10px 6px 10px;}
+  .seal{
+    width:168px; height:168px;
+    border-radius:50%;
+    border:3px dashed var(--red);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transform:rotate(-7deg);
+    text-align:center;
+    padding:10px;
+    position:relative;
+  }
+  .seal.pos{border-color:var(--green);}
+  .seal .s-label{
+    font-size:10px; text-transform:uppercase; letter-spacing:0.8px; font-weight:700;
+    color:var(--red);
+  }
+  .seal.pos .s-label{color:var(--green);}
+  .seal .s-val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:18px; font-weight:700; margin-top:6px; color:var(--ink);
+    line-height:1.25;
+  }
+  .seal .s-sub{font-size:9px; margin-top:6px; color:var(--ink-soft); letter-spacing:0.3px;}
+
+  /* ---------- Table tab ---------- */
+  .idx-controls{display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap;}
+  .idx-controls input{max-width:220px;}
+  table.idx{width:100%; border-collapse:collapse; font-size:12.8px;}
+  table.idx th{
+    background:var(--primary); color:#F4F0E4; text-align:right; padding:8px 10px; font-weight:600; font-size:11.5px;
+    letter-spacing:0.2px; position:sticky; top:0;
+  }
+  table.idx th:first-child, table.idx td:first-child{text-align:left;}
+  table.idx td{padding:6px 10px; border-bottom:1px solid var(--line); text-align:right; font-family:'IBM Plex Mono', monospace;}
+  table.idx tbody tr:nth-child(even){background:var(--paper-2);}
+  table.idx tbody tr.row-selected{
+    background:#D9E8F5 !important;
+    box-shadow: inset 4px 0 0 0 var(--primary-2);
+  }
+  table.idx tbody tr.row-selected td{ color:var(--primary); font-weight:600; }
+  table.idx tbody tr.hit{background:var(--gold-soft); outline:2px solid var(--gold);}
+  .idx-scroll{max-height:520px; overflow:auto; border:1px solid var(--line); border-radius:3px;}
+
+  /* ---------- Documento tab ---------- */
+  .doc-toolbar{display:flex; justify-content:flex-end; margin-bottom:14px; gap:8px;}
+  button.btn{
+    background:var(--primary); color:#F4F0E4; border:none; padding:9px 16px; border-radius:3px;
+    font-size:12.5px; font-weight:600; cursor:pointer; letter-spacing:0.2px;
+  }
+  button.btn:hover{background:var(--primary-2);}
+  button.btn.ghost{background:transparent; color:var(--primary); border:1px solid var(--line-strong);}
+  button.btn.btn-sm{padding:0 12px; font-size:11.5px; white-space:nowrap;}
+
+  @keyframes msgBlink{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0.15; }
+  }
+  .msg-blink{ animation:msgBlink 1s step-start infinite; }
+
+  @keyframes btnFlashPop{
+    0%{ transform:scale(1); }
+    35%{ transform:scale(0.94); }
+    60%{ transform:scale(1.035); box-shadow:0 0 0 4px rgba(46,107,76,0.28); }
+    100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(46,107,76,0); }
+  }
+  button.btn-feedback{ transition:background .15s, color .15s, border-color .15s; }
+  button.btn-feedback.is-active{
+    animation:btnFlashPop .45s ease-out;
+    background:var(--green) !important;
+    color:#F4F0E4 !important;
+    border-color:var(--green) !important;
+  }
+
+  .doc-sheet{
+    background:#fff;
+    border:1px solid var(--line-strong);
+    box-shadow:var(--shadow);
+    padding:38px 46px;
+    font-family:'Source Serif 4', serif;
+    color:#1A1A1A;
+    max-width:840px;
+    margin:0 auto;
+  }
+  .doc-sheet h2{text-align:center; font-size:16.5px; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.3px;}
+  .doc-sheet .doc-sub{text-align:center; font-size:11.5px; font-family:'IBM Plex Sans',sans-serif; color:#555; margin-bottom:20px;}
+  .doc-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 26px; font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; margin-bottom:14px;}
+  .doc-grid div{padding:2px 0; border-bottom:1px dotted #bbb;}
+  .doc-grid b{font-weight:600;}
+  .doc-sheet table{width:100%; border-collapse:collapse; font-family:'IBM Plex Sans',sans-serif; font-size:12px; margin:10px 0 18px 0;}
+  .doc-sheet table td{padding:4px 2px; border-bottom:1px solid #e4e0d4;}
+  .doc-sheet table td.r{text-align:right; font-family:'IBM Plex Mono',monospace;}
+  .doc-sheet .doc-formula{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; margin:14px 0; text-align:center;}
+  .doc-sheet .doc-foot{font-size:10.5px; font-family:'IBM Plex Sans',sans-serif; color:#555; margin-top:6px;}
+  .doc-sheet .doc-legal{font-size:10.5px; font-family:'IBM Plex Sans',sans-serif; color:#333; margin-top:16px; border-top:1px solid #ddd; padding-top:10px;}
+  .doc-sign{margin-top:52px; text-align:center; font-family:'IBM Plex Sans',sans-serif;}
+  .doc-sign .line{width:280px; border-top:1px solid #333; margin:0 auto 6px auto;}
+  .doc-sign b{display:block; font-size:12.5px;}
+  .doc-sign span{font-size:11px; color:#555;}
+  .doc-place-date{text-align:right; font-family:'IBM Plex Sans',sans-serif; font-size:12px; margin:26px 0 6px 0;}
+
+  @media print{
+    @page{ size: A4; margin: 8mm 1mm 8mm 2mm; }
+    header.letterhead, nav.tabs, .doc-toolbar, .tabpanel:not(#tab-documento){display:none !important;}
+    body{background:#fff;}
+    #tab-documento{display:block !important;}
+    .doc-sheet{box-shadow:none; border:none; padding:0; max-width:100%;}
+    .doc-sheet h2{margin-bottom:2px;}
+    .doc-sheet .doc-sub{margin-bottom:12px;}
+    .doc-grid{margin-bottom:8px;}
+    .doc-grid div{padding:1px 0;}
+    .doc-sheet .doc-formula{margin:8px 0;}
+    .doc-sheet table{margin:8px 0 10px 0;}
+    .doc-sheet table td{padding:3px 4px;}
+    #doc_avisoZero, #doc_avisoMenor{margin:8px 0 !important;}
+    .doc-sheet .doc-legal{margin-top:8px; padding-top:8px;}
+    .doc-sheet .doc-legal p{margin:0 0 5px 0;}
+    .doc-place-date{margin:10px 0 4px 0;}
+    .doc-sign{margin-top:16px; padding-top:0;}
+    table, tr, .doc-legal, .doc-sign{ page-break-inside:avoid; }
+  }
+
+  footer.app-foot{
+    max-width:1180px; margin:0 auto; padding:8px 28px 40px 28px;
+    font-size:11px; color:var(--ink-soft); text-align:center;
+  }
+
+  /* ---------- Popup: Resumo gráfico do ICMS (painel flutuante, arrastável, redimensionável) ---------- */
+  .grafico-panel{
+    display:none;
+    position:fixed;
+    top:20px; right:24px;
+    width:480px; height:auto;
+    min-width:320px; min-height:260px;
+    max-width:94vw; max-height:calc(100vh - 40px);
+    background:var(--card);
+    border-radius:8px;
+    border:1px solid var(--line-strong);
+    box-shadow:0 12px 40px rgba(0,0,0,0.28);
+    z-index:200;
+    overflow-y:hidden;
+    overflow-x:hidden;
+  }
+  .grafico-panel.open{ display:block; }
+  .rsz-handle{ position:absolute; z-index:5; }
+  .rsz-handle.n{ top:-4px; left:8px; right:8px; height:8px; cursor:n-resize; }
+  .rsz-handle.s{ bottom:-4px; left:8px; right:8px; height:8px; cursor:s-resize; }
+  .rsz-handle.e{ right:-4px; top:8px; bottom:8px; width:8px; cursor:e-resize; }
+  .rsz-handle.w{ left:-4px; top:8px; bottom:8px; width:8px; cursor:w-resize; }
+  .rsz-handle.ne{ top:-4px; right:-4px; width:14px; height:14px; cursor:ne-resize; }
+  .rsz-handle.nw{ top:-4px; left:-4px; width:14px; height:14px; cursor:nw-resize; }
+  .rsz-handle.se{ bottom:-4px; right:-4px; width:14px; height:14px; cursor:se-resize; }
+  .rsz-handle.sw{ bottom:-4px; left:-4px; width:14px; height:14px; cursor:sw-resize; }
+  .grafico-modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--card); border-radius:8px 8px 0 0;
+    cursor:move; /* indica que a barra é arrastável */
+    user-select:none;
+    z-index:1;
+  }
+  .grafico-modal-head h3{ margin:0; font-family:'Source Serif 4',serif; font-size:15.5px; color:var(--primary); }
+  .grafico-close{
+    background:none; border:none; font-size:18px; cursor:pointer; color:var(--ink-soft);
+    width:30px; height:30px; border-radius:50%; line-height:1;
+  }
+  .grafico-close:hover{ background:var(--paper-2); color:var(--ink); }
+  .grafico-modal-body{ padding:18px; transform-origin:top left; }
+
+  .grafico-kpis{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
+  @media (max-width:520px){ .grafico-kpis{ grid-template-columns:1fr; } }
+  .grafico-kpi{ border-radius:6px; padding:12px; text-align:center; }
+  .grafico-kpi .gl{ font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; font-weight:700; opacity:0.85; }
+  .grafico-kpi .gv{ font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; margin-top:5px; }
+  .grafico-kpi.devido{ background:#DCE8F0; color:var(--primary); }
+  .grafico-kpi.recolhido{ background:var(--green-soft); color:var(--green); }
+  .grafico-kpi.arecolher{ background:var(--gold-soft); color:var(--gold); }
+
+  .grafico-bars{ margin-bottom:22px; }
+  .grafico-bar-row{ margin-bottom:12px; }
+  .grafico-bar-label{ display:flex; justify-content:space-between; font-size:12px; color:var(--ink-soft); margin-bottom:4px; }
+  .grafico-bar-track{ background:var(--paper-2); border-radius:20px; height:16px; overflow:hidden; }
+  .grafico-bar-fill{ height:100%; border-radius:20px; transition:width .3s; }
+
+  .grafico-donut-wrap{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; justify-content:center; }
+  .grafico-legend{ font-size:12.5px; }
+  .grafico-legend div{ display:flex; align-items:center; gap:7px; margin-bottom:6px; }
+  .grafico-legend .sw{ width:11px; height:11px; border-radius:3px; flex:none; }
+  .grafico-pct-msg{
+    margin-top:16px; padding:10px 12px; border-radius:5px; font-size:12.5px; text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<header class="letterhead">
+  <div class="letterhead-top">
+    <svg class="seal-emblem" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#F0D48A" stroke-width="2"/>
+      <circle cx="30" cy="30" r="21" stroke="#F0D48A" stroke-width="1" stroke-dasharray="2 3"/>
+      <path d="M30 15 L38 20 V30 C38 37 34 42 30 45 C26 42 22 37 22 30 V20 Z" fill="none" stroke="#F0D48A" stroke-width="1.6"/>
+      <path d="M25 29 L29 33 L36 24" stroke="#F0D48A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="letterhead-text">
+      <h1>Cálculo do ICMS Frete — Pauta Fiscal Rodoviária</h1>
+      <p>Transporte interestadual e intermunicipal de cargas · Art. 10 da <span class="in-tag" id="letterheadIN">IN 35/2026/GAB/CRE</span> · RICMS/RO</p>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="calc">Calculadora</button>
+    <button class="tab-btn" data-tab="tabela">Tabela de Índices</button>
+    <button class="tab-btn" data-tab="documento">Documento</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ======================= CALCULADORA ======================= -->
+  <section class="tabpanel active" id="tab-calc">
+    <div class="grid">
+
+      <!-- LEFT: INPUTS -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Sujeito Passivo &amp; Processo</h2>
+            <span class="eyebrow">Identificação</span>
+          </div>
+          <div class="card-body">
+            <div class="field-row single">
+              <div class="field">
+                <label>Nome / Razão Social</label>
+                <input type="text" id="f_nome" value="IVO JOSE STEFFENS" list="nomesCadastroList" autocomplete="off">
+                <div class="hint" id="nomeMatchHint"></div>
+              </div>
+            </div>
+            <datalist id="nomesCadastroList"></datalist>
+            <div class="field-row">
+              <div class="field"><label>CNPJ / CPF</label><input type="text" id="f_cnpj" value="366.222.810-68" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00"></div>
+              <div class="field"><label>Inscrição Estadual</label><input type="text" id="f_ie" placeholder="—"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Auto de Infração nº</label><input type="text" id="f_auto" placeholder="—"></div>
+              <div class="field"><label>Comando / Processo</label><input type="text" id="f_comando" value="20263060063555"></div>
+            </div>
+            <hr class="rule">
+            <div class="field-row">
+              <div class="field"><label>NF-e(s)</label><input type="text" id="f_nfe" value="576549"></div>
+              <div class="field"><label>Placa(s)</label><input type="text" id="f_placas" value="AYT0E20 e MGK8121"></div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label style="display:flex; justify-content:space-between; align-items:baseline;">Origem <span class="google-badge" id="origemGoogleBadge" style="display:none; font-size:11px; font-weight:600; color:var(--green);">✓ Google Maps</span></label>
+                <div style="position:relative;">
+                  <input type="text" id="f_origem" value="PORTO VELHO/RO" autocomplete="off">
+                  <div class="custom-dropdown" id="origemDropdown"></div>
+                </div>
+                <div id="origemGmpContainer" style="display:none;"></div>
+              </div>
+              <div class="field">
+                <label style="display:flex; justify-content:space-between; align-items:baseline;">Destino <span class="google-badge" id="destinoGoogleBadge" style="display:none; font-size:11px; font-weight:600; color:var(--green);">✓ Google Maps</span></label>
+                <div style="position:relative;">
+                  <input type="text" id="f_destino" value="CONDE/PB" autocomplete="off">
+                  <div class="custom-dropdown" id="destinoDropdown"></div>
+                </div>
+                <div id="destinoGmpContainer" style="display:none;"></div>
+                <div class="hint" id="destinoMunicipiosStatus"></div>
+              </div>
+            </div>
+            <datalist id="municipiosList"></datalist>
+            <datalist id="municipiosRO">
+              <option value="Alta Floresta D'Oeste/RO"></option>
+              <option value="Alto Alegre dos Parecis/RO"></option>
+              <option value="Alto Paraíso/RO"></option>
+              <option value="Alvorada D'Oeste/RO"></option>
+              <option value="Ariquemes/RO"></option>
+              <option value="Buritis/RO"></option>
+              <option value="Cabixi/RO"></option>
+              <option value="Cacaulândia/RO"></option>
+              <option value="Cacoal/RO"></option>
+              <option value="Campo Novo de Rondônia/RO"></option>
+              <option value="Candeias do Jamari/RO"></option>
+              <option value="Castanheiras/RO"></option>
+              <option value="Cerejeiras/RO"></option>
+              <option value="Chupinguaia/RO"></option>
+              <option value="Colorado do Oeste/RO"></option>
+              <option value="Corumbiara/RO"></option>
+              <option value="Costa Marques/RO"></option>
+              <option value="Cujubim/RO"></option>
+              <option value="Espigão D'Oeste/RO"></option>
+              <option value="Governador Jorge Teixeira/RO"></option>
+              <option value="Guajará-Mirim/RO"></option>
+              <option value="Itapuã do Oeste/RO"></option>
+              <option value="Jaru/RO"></option>
+              <option value="Ji-Paraná/RO"></option>
+              <option value="Machadinho D'Oeste/RO"></option>
+              <option value="Ministro Andreazza/RO"></option>
+              <option value="Mirante da Serra/RO"></option>
+              <option value="Monte Negro/RO"></option>
+              <option value="Nova Brasilândia D'Oeste/RO"></option>
+              <option value="Nova Mamoré/RO"></option>
+              <option value="Nova União/RO"></option>
+              <option value="Novo Horizonte do Oeste/RO"></option>
+              <option value="Ouro Preto do Oeste/RO"></option>
+              <option value="Parecis/RO"></option>
+              <option value="Pimenta Bueno/RO"></option>
+              <option value="Pimenteiras do Oeste/RO"></option>
+              <option value="Porto Velho/RO"></option>
+              <option value="Presidente Médici/RO"></option>
+              <option value="Primavera de Rondônia/RO"></option>
+              <option value="Rio Crespo/RO"></option>
+              <option value="Rolim de Moura/RO"></option>
+              <option value="Santa Luzia D'Oeste/RO"></option>
+              <option value="São Felipe D'Oeste/RO"></option>
+              <option value="São Francisco do Guaporé/RO"></option>
+              <option value="São Miguel do Guaporé/RO"></option>
+              <option value="Seringueiras/RO"></option>
+              <option value="Teixeirópolis/RO"></option>
+              <option value="Theobroma/RO"></option>
+              <option value="Urupá/RO"></option>
+              <option value="Vale do Anari/RO"></option>
+              <option value="Vale do Paraíso/RO"></option>
+              <option value="Vilhena/RO"></option>
+            </datalist>
+            <div class="field-row btn-row-3">
+              <button type="button" class="btn btn-feedback" id="btnAddCadastroTop">💾 Salvar registro na tabela de cadastro</button>
+              <button type="button" class="btn ghost btn-feedback" id="btnNovoRegistro">🆕 Novo registro</button>
+              <button type="button" class="btn ghost btn-feedback" id="btnLimparCampos">🧹 Limpar campos</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Variáveis do Cálculo</h2>
+            <span class="eyebrow">BC = Peso × Diesel × Índice</span>
+          </div>
+          <div class="card-body">
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Distância percorrida (km) <span class="req">*</span></label>
+                <div style="display:flex; gap:8px; align-items:stretch;">
+                  <input type="number" id="f_km" value="4550" min="1" max="6000" step="1" style="flex:1;">
+                  <button type="button" class="btn ghost btn-sm" id="btnCalcKm" title="Calcular a partir de Origem e Destino">Calcular por Origem/Destino</button>
+                </div>
+                <div class="detected" id="kmDetected">Faixa: 4501 a 4600</div>
+                <div class="hint" id="kmCalcStatus"></div>
+              </div>
+            </div>
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Chave de API do Google Maps (opcional)</label>
+                <input type="text" id="f_googleApiKey" placeholder="Cole aqui sua chave, se tiver uma — deixe em branco para usar o cálculo gratuito (OpenStreetMap)">
+                <div class="hint">Se preenchida, o app tenta calcular a distância via Google Maps primeiro (mais preciso e confiável) e ativa a sugestão automática de cidades nos campos Origem e Destino. Requer uma chave própria com "Distance Matrix API" e "Places API" habilitadas e faturamento ativo no <a href="https://console.cloud.google.com/google/maps-apis" target="_blank" rel="noopener">Google Cloud Console ↗</a>. Sem chave, o app usa o serviço gratuito (OpenStreetMap/OSRM), a lista fixa de municípios de RO em Origem, e a lista de destinos já digitados.</div>
+                <div class="hint" id="googleAutocompleteStatus"></div>
+              </div>
+            </div>
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Tipo de carga (coluna do índice)</label>
+                <div class="seg" id="segColuna">
+                  <button data-val="A" class="on">A · Refrigerada / não inscrito CAD-ICMS-RO</button>
+                  <button data-val="B">B · Carga seca</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Peso da carga (toneladas) <span class="req">*</span></label>
+                <input type="number" id="f_peso" value="28.5" step="0.01" min="0">
+              </div>
+            </div>
+            <div class="field-row single">
+              <div class="field">
+                <label>Valor do diesel (R$) <span class="req">*</span></label>
+                <input type="number" id="f_diesel" step="0.01" min="0">
+                <div class="hint" id="dieselSourceHint">Carregando referência…</div>
+                <div class="hint"><a href="https://sidiec.sefin.ro.gov.br/ords/f?p=157:130::::::" target="_blank" rel="noopener">Conferir / atualizar no SIDIEC · SEFIN-RO ↗</a></div>
+              </div>
+            </div>
+            <div class="field-row single">
+              <div class="field">
+                <label>Índice aplicado</label>
+                <input type="text" id="indiceAplicado" class="mono" readonly>
+                <div class="hint">Conforme Tabela de Índices, de acordo com a distância percorrida.</div>
+              </div>
+            </div>
+
+            <hr class="rule">
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Alíquota do ICMS devido</label>
+                <div class="seg" id="segAliquota">
+                  <button data-val="12" class="on">12% · Interestadual</button>
+                  <button data-val="19.5">19,5% · Art. 12, §1º, V, RICMS/RO</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>ICMS recolhido / declarado (R$)</label>
+                <input type="number" id="f_recolhido" value="0" step="0.01" min="0">
+              </div>
+              <div class="field">
+                <label>Recolhido já com redução de 50%?</label>
+                <div class="seg" id="segComRed">
+                  <button data-val="nao" class="on">Não</button>
+                  <button data-val="sim">Sim</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Optou pelo crédito presumido de 20%?</label>
+                <div class="seg" id="segCredito">
+                  <button data-val="nao" class="on">Não</button>
+                  <button data-val="sim">Sim</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Instrução Normativa &amp; Responsável</h2>
+            <span class="eyebrow">Assinatura</span>
+          </div>
+          <div class="card-body">
+            <div class="field-row">
+              <div class="field">
+                <label>IN nº / ano em vigor</label>
+                <input type="text" id="f_in" value="35/2026">
+                <div class="hint" id="inStatusHint"></div>
+              </div>
+              <div class="field">
+                <label>Servidor responsável</label>
+                <div style="display:flex; gap:8px; align-items:stretch;">
+                  <select id="f_servidor" style="flex:1;"></select>
+                  <button type="button" class="btn ghost btn-sm" id="btnNovoServidor" title="Adicionar novo servidor à lista">+ Novo</button>
+                </div>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Cargo</label><input type="text" id="f_cargo" readonly></div>
+              <div class="field"><label>Matrícula</label><input type="text" id="f_matricula"></div>
+            </div>
+
+            <div id="novoServidorPainel" style="display:none; border:1px solid var(--line-strong); border-radius:3px; padding:12px; margin-top:10px; background:var(--paper-2);">
+              <div style="font-size:12.5px; font-weight:700; color:var(--primary); margin-bottom:10px;">Novo servidor</div>
+              <div class="field-row single">
+                <div class="field">
+                  <label>Nome <span class="req">*</span></label>
+                  <input type="text" id="novoServ_nome" placeholder="Nome completo">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>Cargo</label>
+                  <select id="novoServ_cargo">
+                    <option value="Auditor Fiscal de Tributos Estaduais">Auditor Fiscal de Tributos Estaduais</option>
+                    <option value="Analista Tributário de Receita Estadual">Analista Tributário de Receita Estadual</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Matrícula</label>
+                  <input type="text" id="novoServ_matricula" placeholder="Opcional">
+                </div>
+              </div>
+              <div class="field-row btn-row-3" style="grid-template-columns:1fr 1fr;">
+                <button type="button" class="btn" id="btnSalvarNovoServidor">Salvar servidor</button>
+                <button type="button" class="btn ghost" id="btnCancelarNovoServidor">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Base de Cálculo &amp; ICMS Devido</h2>
+            <span class="eyebrow">Pauta fiscal</span>
+          </div>
+          <div class="card-body">
+            <div class="hint" id="bcArtFormula" style="text-align:center; margin-bottom:12px;">BC transporte rodoviário = Peso × Diesel outros × Índice (Art. 10 da IN 35/2026/GAB/CRE)</div>
+            <div class="note" id="bcFormula" style="margin-top:0; margin-bottom:12px; font-family:'IBM Plex Mono', monospace; font-size:13px; text-align:center;">
+              R$ 0,00 <span style="opacity:0.6;">(diesel)</span> × 0,00 <span style="opacity:0.6;">(peso, t)</span> × 0,00 <span style="opacity:0.6;">(índice)</span> = <b>R$ 0,00</b>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi">
+                <div class="l">Base de cálculo do ICMS Frete</div>
+                <div class="v mono" id="r_bc">R$ 0,00</div>
+              </div>
+              <div class="kpi">
+                <div class="l" id="r_devidoLabel">ICMS devido (alíquota cheia)</div>
+                <div class="v mono" id="r_devido">R$ 0,00</div>
+              </div>
+            </div>
+            <div class="note" id="icmsFormula" style="font-family:'IBM Plex Mono', monospace; font-size:13px; text-align:center;">
+              R$ 0,00 <span style="opacity:0.6;">(BC)</span> × 0% <span style="opacity:0.6;">(alíquota)</span> = <b>R$ 0,00</b>
+            </div>
+            <div class="note" id="art1note">
+              De acordo com o Art. 1º e seu § 1º da Instrução Normativa nº 42/2026/GAB/CRE, o contribuinte deve adotar, para efeito de cálculo do ICMS Frete, dentre os valores, calculado pela pauta e aquele efetivamente contratado/declarado, o maior.
+            </div>
+            <button type="button" class="btn" id="btnAbrirGrafico" style="width:100%; margin-top:12px;">📊 Ver resumo gráfico do ICMS</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Comparativo: Pauta × Contribuinte</h2>
+            <span class="eyebrow">Simulação com espontaneidade preservada</span>
+          </div>
+          <div class="card-body">
+            <div class="panel-compare">
+              <div>
+                <div class="col-head">Cálculo pela Pauta (RBC 50%)</div>
+                <table class="calc">
+                  <tr><td class="lbl">ICMS devido — 12% (tabela)</td><td class="val" id="h10">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">50% de RBC</td><td class="val" id="h11">0,00</td></tr>
+                  <tr><td class="lbl">ICMS a recolher 1</td><td class="val" id="h12">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">Crédito presumido 20%</td><td class="val" id="h13">0,00</td></tr>
+                  <tr><td class="lbl">ICMS a recolher 2</td><td class="val" id="h14">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">(–) ICMS recolhido</td><td class="val" id="h15">0,00</td></tr>
+                  <tr class="total"><td class="lbl" id="h16label">ICMS a pagar</td><td class="val" id="h16">0,00</td></tr>
+                </table>
+                <div class="bar-wrap">
+                  <div class="bar-track"><div class="bar-fill" id="h17bar" style="width:0%"></div></div>
+                  <div class="bar-label"><span>Recolhido / a recolher</span><span id="h17">0,0%</span></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="col-head">Cálculo do Contribuinte</div>
+                <table class="calc">
+                  <tr><td class="lbl">ICMS devido (base informada)</td><td class="val" id="i10">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">Redução de 50% (se aplicável)</td><td class="val" id="i11">0,00</td></tr>
+                  <tr><td class="lbl">ICMS a recolher 1</td><td class="val" id="i12">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">Crédito presumido 20%</td><td class="val" id="i13">0,00</td></tr>
+                  <tr><td class="lbl">ICMS a recolher 2</td><td class="val" id="i14">0,00</td></tr>
+                  <tr class="sub"><td class="lbl">(–) ICMS recolhido</td><td class="val" id="i15">0,00</td></tr>
+                  <tr class="total"><td class="lbl" id="i16label">ICMS a pagar</td><td class="val" id="i16">0,00</td></tr>
+                </table>
+                <div class="bar-wrap">
+                  <div class="bar-track"><div class="bar-fill" id="i17bar" style="width:0%"></div></div>
+                  <div class="bar-label"><span>Recolhido / a recolher</span><span id="i17">0,0%</span></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="rule">
+
+            <div class="field-row">
+              <div class="kpi"><div class="l">BC de acordo com a pauta</div><div class="v mono" id="i19">R$ 0,00</div></div>
+              <div class="kpi"><div class="l">BC declarada pelo contribuinte</div><div class="v mono" id="i20">R$ 0,00</div></div>
+            </div>
+            <div class="bar-wrap">
+              <div class="bar-track"><div class="bar-fill" id="i21bar" style="width:0%"></div></div>
+              <div class="bar-label"><span>BC declarada / BC pauta</span><span id="i21">0,0%</span></div>
+            </div>
+            <div id="compareNote" class="note">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Penalidade caso houvesse autuação</h2>
+            <span class="eyebrow">Auto de Infração</span>
+          </div>
+          <div class="card-body">
+            <div class="seal-zone">
+              <div class="seal" id="mainSeal">
+                <div class="s-label" id="sealLabel">ICMS a pagar</div>
+                <div class="s-val mono" id="sealValue">R$ 0,00</div>
+                <div class="s-sub">Pauta · RBC 50%</div>
+              </div>
+              <div class="kpi" style="min-width:200px;">
+                <div class="l">Multa por omissão do recolhimento antecipado (90%)</div>
+                <div class="v mono" id="r_multa">R$ 0,00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="avisoRecolhidoZeroCard" style="display:none; border-color:var(--red);">
+          <div class="card-body" style="text-align:center;">
+            <div id="avisoRecolhidoZero" class="msg-blink" style="color:var(--red); font-size:16px; font-weight:700;">SE NÃO HOUVE QUALQUER PAGAMENTO DE ICMS, ISTO PODE SIGNIFICAR FALTA DE RECOLHIMENTO ESPONTÂNEO DO IMPOSTO, O QUE RESULTA EM INFRAÇÃO À LEGISLAÇÃO TRIBUTÁRIA.</div>
+          </div>
+        </div>
+
+        <div class="card" id="avisoRecolhidoMenorCard" style="display:none; border-color:var(--red);">
+          <div class="card-body" style="text-align:center;">
+            <div id="avisoRecolhidoMenor" class="msg-blink" style="color:var(--red); font-size:16px; font-weight:700;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Tabela de Cadastro</h2>
+        <span class="eyebrow">Registros salvos</span>
+      </div>
+      <div class="card-body">
+        <div class="doc-toolbar" style="margin-bottom:8px; justify-content:flex-start; flex-wrap:wrap;">
+          <button class="btn" id="btnAddCadastro">+ Adicionar registro atual</button>
+          <button class="btn ghost" id="btnExportCadastro">⬇️ Exportar registros (.json)</button>
+          <button class="btn ghost" id="btnImportCadastro">⬆️ Importar registros (.json)</button>
+          <button class="btn ghost" id="btnCopyCadastro">📋 Copiar registros</button>
+          <button class="btn ghost" id="btnPasteCadastro">📥 Colar registros (de outro aparelho)</button>
+          <input type="file" id="fileImportCadastro" accept="application/json" style="display:none;">
+        </div>
+        <div class="hint" id="cadastroPersistHint" style="margin-bottom:10px;"></div>
+        <div class="idx-scroll" style="max-height:320px;">
+          <table class="idx" id="cadastroTable">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Nome / Razão Social</th>
+                <th style="text-align:left;">CNPJ / CPF</th>
+                <th style="text-align:left;">Inscrição Estadual</th>
+                <th style="text-align:left;">Comando / Processo</th>
+                <th style="text-align:left;">NF-e(s)</th>
+                <th style="text-align:left;">Placa(s)</th>
+                <th style="text-align:left;">Origem</th>
+                <th style="text-align:left;">Destino</th>
+                <th style="text-align:left;">IN nº / ano</th>
+                <th style="text-align:left;">—</th>
+              </tr>
+            </thead>
+            <tbody id="cadastroBody">
+              <tr id="cadastroEmptyRow"><td colspan="10" style="text-align:center; font-style:italic; color:var(--ink-soft);">Nenhum registro adicionado ainda.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ======================= TABELA DE ÍNDICES ======================= -->
+  <section class="tabpanel" id="tab-tabela">
+    <div class="card">
+      <div class="card-head">
+        <h2>Tabela de Índices para Cálculo de Frete Rodoviário</h2>
+        <span class="eyebrow">Art. 10 · Anexo à Instrução Normativa</span>
+      </div>
+      <div class="card-body">
+        <div class="idx-controls">
+          <div class="field"><label>Buscar por km</label><input type="number" id="idxSearch" placeholder="ex.: 4550"></div>
+          <div class="note" style="margin-top:18px;">A linha correspondente à distância informada na Calculadora é destacada automaticamente.</div>
+        </div>
+        <div class="idx-scroll">
+          <table class="idx">
+            <thead><tr><th>Distância em KM</th><th>Coluna A — refrigerada / não inscrito</th><th>Coluna B — carga seca</th></tr></thead>
+            <tbody id="idxBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= DOCUMENTO ======================= -->
+  <section class="tabpanel" id="tab-documento">
+    <div class="doc-toolbar">
+      <button class="btn ghost" id="btnBack">← Voltar à calculadora</button>
+      <button class="btn" id="btnPrint">Imprimir / salvar PDF</button>
+    </div>
+    <div class="doc-sheet" id="docSheet">
+      <h2>Demonstrativo de Cálculo do ICMS Frete</h2>
+      <div class="doc-sub">De acordo com a Pauta Fiscal Estadual — <span id="doc_inhead">IN 35/2026/GAB/CRE</span></div>
+
+      <div class="doc-grid">
+        <div><b>Sujeito Passivo:</b> <span id="doc_nome"></span></div>
+        <div><b>NF-e(s):</b> <span id="doc_nfe"></span></div>
+        <div><b>CNPJ/CPF:</b> <span id="doc_cnpj"></span></div>
+        <div><b>Origem:</b> <span id="doc_origem"></span></div>
+        <div><b>Auto de Infração:</b> <span id="doc_auto"></span></div>
+        <div><b>Destino:</b> <span id="doc_destino"></span></div>
+        <div><b>Comando:</b> <span id="doc_comando"></span></div>
+        <div><b>Placa(s):</b> <span id="doc_placas"></span></div>
+      </div>
+
+      <div class="doc-formula" id="doc_formula"></div>
+
+      <table>
+        <tr><td>Índice distância — km percorridos: <span id="doc_faixa"></span></td><td><b>A</b></td><td class="r" id="doc_a"></td></tr>
+        <tr><td>Valor do diesel</td><td><b>B</b></td><td class="r" id="doc_b"></td></tr>
+        <tr><td>Peso da carga (toneladas)</td><td><b>C</b></td><td class="r" id="doc_c"></td></tr>
+        <tr><td>Base de cálculo do ICMS Frete</td><td><b>D = A×B×C</b></td><td class="r" id="doc_d"></td></tr>
+        <tr><td>ICMS devido — <span id="doc_aliqlabel"></span></td><td style="white-space:nowrap;"><b>E = D × alíq.</b></td><td class="r" id="doc_e"></td></tr>
+        <tr><td>ICMS recolhido</td><td><b>F</b></td><td class="r" id="doc_f"></td></tr>
+        <tr><td><b>ICMS Frete a recolher</b></td><td><b>G = E − F</b></td><td class="r"><b id="doc_g"></b></td></tr>
+        <tr><td>Comparativo % recolhido / devido</td><td><b>H = F/E</b></td><td class="r" id="doc_h"></td></tr>
+        <tr><td><b>Caso houvesse aplicação de penalidade por erro ou omissão no pagamento do ICMS Frete</b></td><td><b>I = E × 90%</b></td><td class="r"><b id="doc_i"></b></td></tr>
+      </table>
+
+      <div id="doc_avisoZero" style="display:none; color:#B23A2E; font-size:16px; font-weight:700; text-align:left; font-family:'IBM Plex Sans',sans-serif; margin:14px 0;">SE NÃO HOUVE QUALQUER PAGAMENTO DE ICMS, ISTO PODE SIGNIFICAR FALTA DE RECOLHIMENTO ESPONTÂNEO DO IMPOSTO, O QUE RESULTA EM INFRAÇÃO À LEGISLAÇÃO TRIBUTÁRIA.</div>
+      <div id="doc_avisoMenor" style="display:none; color:#B23A2E; font-size:16px; font-weight:700; text-align:left; font-family:'IBM Plex Sans',sans-serif; margin:14px 0;"></div>
+
+      <div class="doc-legal">
+        <p><b>Legislação Tributária de referência:</b></p>
+        <p><b>Instrução Normativa nº 42/2026/GAB/CRE</b></p>
+        <p>(…)</p>
+        <p><b>Art. 10.</b> Nas prestações de serviços de transporte interestadual e intermunicipal rodoviário de cargas, a base de cálculo do ICMS é encontrada mediante a aplicação da seguinte fórmula: BC transporte rodoviário = Peso × Diesel outros × Índice.</p>
+        <p><b>Art. 1º.</b> A Pauta Fiscal de mercadorias e produtos corresponde ao valor mínimo das operações ou prestações de saídas, não estando incluso o frete, exceto nos casos especificamente indicados (Lei nº 688/96, art. 18, §6º). O Sujeito Passivo deverá adotar, para efeito de apuração do ICMS Frete, dentre os valores de pauta ou contratado, o maior.</p>
+        <p class="doc-foot">Índice extraído da tabela de índices para cálculo de frete rodoviário constante do Art. 10 da <span id="doc_infoot1"></span>. Valor do óleo diesel extraído do Ato Cotepe ICMS (PMPF), publicado no site da SEFIN-RO.</p>
+      </div>
+
+      <div class="doc-place-date" id="doc_placedate"></div>
+
+      <div class="doc-sign">
+        <div class="line"></div>
+        <b id="doc_servidor_nome">—</b>
+        <span id="doc_servidor_cargo">—</span><br>
+        <span id="doc_servidor_matricula">—</span>
+      </div>
+  </section>
+
+</main>
+
+<footer class="app-foot">Ferramenta de apoio ao cálculo — os valores oficiais devem sempre ser conferidos na Pauta Fiscal e na legislação vigente (RICMS/RO e Instrução Normativa aplicável).</footer>
+
+<div id="graficoPanel" class="grafico-panel">
+  <div class="rsz-handle n" data-dir="n"></div>
+  <div class="rsz-handle s" data-dir="s"></div>
+  <div class="rsz-handle e" data-dir="e"></div>
+  <div class="rsz-handle w" data-dir="w"></div>
+  <div class="rsz-handle ne" data-dir="ne"></div>
+  <div class="rsz-handle nw" data-dir="nw"></div>
+  <div class="rsz-handle se" data-dir="se"></div>
+  <div class="rsz-handle sw" data-dir="sw"></div>
+  <div class="grafico-modal-head" id="graficoDragHandle">
+    <h3>📊 Resumo gráfico do ICMS Frete</h3>
+    <button type="button" id="btnFecharGrafico" class="grafico-close" aria-label="Fechar">✕</button>
+  </div>
+  <div class="grafico-modal-body" id="graficoModalBody">
+    <!-- preenchido dinamicamente via JS -->
+  </div>
+</div>
+
+<script>
+(function(){
+
+  // ---------------- Data: distance/index table ----------------
+  var IDX = [
+    [1,50,10.25,10.35],[51,100,17.88,11.39],[101,150,20.26,12.9],[151,200,22.13,14.09],
+    [201,250,23.77,15.14],[251,300,26.05,16.59],[301,350,28.39,18.08],[351,400,30.22,19.24],
+    [401,450,31.59,20.12],[451,500,32.56,20.73],[501,550,33.19,21.14],[551,600,33.53,21.35],
+    [601,650,33.61,21.4],[651,700,36.3,23.12],[701,750,38.84,24.73],[751,800,41.57,26.47],
+    [801,850,44.47,28.32],[851,900,47.59,30.31],[901,950,50.92,32.43],[951,1000,53.98,34.37],
+    [1001,1100,57.22,36.44],[1101,1200,60.65,38.62],[1201,1300,64.29,40.94],[1301,1400,68.15,43.4],
+    [1401,1500,72.24,46],[1501,1600,75.85,48.3],[1601,1700,79.64,50.71],[1701,1800,83.63,53.26],
+    [1801,1900,87.81,55.92],[1901,2000,92.2,58.71],[2001,2100,95.85,61.04],[2101,2200,98.45,62.69],
+    [2201,2300,100.86,64.23],[2301,2400,103.55,65.64],[2401,2500,106.09,67.56],[2501,2600,109.37,69.65],
+    [2601,2700,117.48,74.81],[2701,2800,126.44,80.52],[2801,2900,135.73,86.43],[2901,3000,139.25,88.67],
+    [3001,3100,142.68,90.86],[3101,3200,146.35,93.2],[3201,3300,149.96,95.49],[3301,3400,153.8,97.94],
+    [3401,3500,157.6,100.36],[3501,3600,161.62,102.92],[3601,3700,165.61,105.46],[3701,3800,169.82,108.14],
+    [3801,3900,174.01,110.81],[3901,4000,178.42,113.62],[4001,4100,182.83,116.43],[4101,4200,187.45,119.37],
+    [4201,4300,192.08,122.32],[4301,4400,195.99,124.81],[4401,4500,199.87,127.28],[4501,4600,203.93,129.86],
+    [4601,4700,207.97,132.44],[4701,4800,213.2,135.77],[4801,4900,218.46,139.12],[4901,5000,222.88,141.93],
+    [5001,5200,229.54,146.17],[5201,5400,238.73,152.02],[5401,5600,248.28,158.1],[5601,5800,258.21,164.43],
+    [5801,6000,268.54,171.01]
+  ];
+
+  // ---------------- Data: servidores ----------------
+  var SERVIDORES = [
+    ["Auditor Fiscal de Tributos Estaduais","ADALBERTO  DE SOUZA","300014776"],
+    ["Analista Tributário de Receita Estadual","ALEX MONTEIRO HIGA","300179678"],
+    ["Auditor Fiscal de Tributos Estaduais","AMIRTON MOREIRA","300064325"],
+    ["Auditor Fiscal de Tributos Estaduais","ANDERSON ARI APPELT","300127645"],
+    ["Analista Tributário de Receita Estadual","ANDREY KERBER",""],
+    ["Auditor Fiscal de Tributos Estaduais","ANTONIO ROSA CRUZ","300024017"],
+    ["Auditor Fiscal de Tributos Estaduais","CÍCERO ANTONIO DANTAS DA SILVA","300049358"],
+    ["Auditor Fiscal de Tributos Estaduais","DIGELMA NETTO","300042898"],
+    ["Auditor Fiscal de Tributos Estaduais","DIOGO YOST MENDES DE ASSIS","300169020"],
+    ["Analista Tributário de Receita Estadual","ELAINE MENDES","300188495"],
+    ["Auditor Fiscal de Tributos Estaduais","FERNANDO STUCHI R. OLIVEIRA","300169027"],
+    ["Auditor Fiscal de Tributos Estaduais","GILBERTO A. F. SANCHES","300061455"],
+    ["Auditor Fiscal de Tributos Estaduais","HUMBERTO C R BRITO",""],
+    ["Analista Tributário de Receita Estadual","JANIELE JETENES","300187847"],
+    ["Analista Tributário de Receita Estadual","JAQUELINE JETENES MARTINS","300179689"],
+    ["Auditor Fiscal de Tributos Estaduais","JEFERSON K AYRES","300064114"],
+    ["Analista Tributário de Receita Estadual","JOSE GOULARTE","300179694"],
+    ["Analista Tributário de Receita Estadual","KELTON CHOMA PAIVA",""],
+    ["Analista Tributário de Receita Estadual","LEANDRO ANTONIO TEZA","300049336"],
+    ["Analista Tributário de Receita Estadual","LILIAN GRACYETE A. D. COSTA","300179065"],
+    ["Analista Tributário de Receita Estadual","LUIZ GERSON","300187885"],
+    ["Auditor Fiscal de Tributos Estaduais","MARCELO MIOTTO","300098337"],
+    ["Analista Tributário de Receita Estadual","MARCIO AUGUSTO GOMES","300050396"],
+    ["Analista Tributário de Receita Estadual","MARCUS VINICIUS O. CUNHA","300179868"],
+    ["Analista Tributário de Receita Estadual","RAFAEL PONTES DOS REIS","300180536"],
+    ["Auditor Fiscal de Tributos Estaduais","ROGÉRIO DENIS PERINAZZO","300064330"],
+    ["Auditor Fiscal de Tributos Estaduais","RUTEMBERG G BOTELHO","300110088"],
+    ["Analista Tributário de Receita Estadual","SERGIO DE JESUS SILVA","300180638"],
+    ["Auditor Fiscal de Tributos Estaduais","WAGNER PIRES RAFUL","300049321"],
+    ["Auditor Fiscal de Tributos Estaduais","Antero A. Peres F. Câmara","300064606"],
+    ["Auditor Fiscal de Tributos Estaduais","RAFAEL TRIGUEIRO DE ANDRADE","300098330"]
+  ];
+
+  // ---------------- Data: PMPF Diesel Outros — RONDÔNIA (média ponderada, R$/L) ----------------
+  // Fonte: SIDIEC/SEFIN-RO — https://sidiec.sefin.ro.gov.br/ords/f?p=157:130::::::
+  // Filtros: Modelo AMBOS · Produto DIESEL OUTROS · Tipo MÉDIA PONDERADA · linha *RONDÔNIA*
+  // Índice do array = mês (1=Jan ... 12=Dez). Consultado em 04/08/2026 (dado de AGO ainda parcial, mês em andamento).
+  var DIESEL_HISTORICO = {
+    2026: {1:6.24, 2:6.19, 3:6.85, 4:7.17, 5:6.98, 6:6.84, 7:6.74, 8:6.84}
+  };
+  var MESES_ABREV = ['','JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+
+  function getPrevMonthDiesel(){
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = now.getMonth() + 1; // mês atual, 1-based
+    var py = y, pm = m - 1;
+    if(pm < 1){ pm = 12; py = y - 1; }
+    var yearData = DIESEL_HISTORICO[py];
+    if(yearData && yearData[pm] !== undefined){
+      return {value: yearData[pm], month: pm, year: py, found:true};
+    }
+    // Sem dado embutido para o mês anterior: usa o mês mais recente disponível como referência aproximada
+    var fallbackYear = Object.keys(DIESEL_HISTORICO).map(Number).sort().reverse()[0];
+    var fallbackData = DIESEL_HISTORICO[fallbackYear];
+    var fallbackMonths = Object.keys(fallbackData).map(Number).sort(function(a,b){return a-b;});
+    var lastMonth = fallbackMonths[fallbackMonths.length-1];
+    return {value: fallbackData[lastMonth], month:lastMonth, year:fallbackYear, found:false};
+  }
+
+  // ---------------- State ----------------
+  var state = {
+    coluna:'A', aliquota:12, comRed:false, credito:false
+  };
+
+  function fmtBRL(n){
+    if(isNaN(n) || !isFinite(n)) n = 0;
+    return n.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  }
+  function fmtNum(n){
+    if(isNaN(n) || !isFinite(n)) n = 0;
+    return n.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function fmtPct(n){
+    if(isNaN(n) || !isFinite(n)) n = 0;
+    return (n*100).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+  }
+  function clampPct(n){ return Math.max(0, Math.min(100, Math.abs(n)*100)); }
+  function $(id){ return document.getElementById(id); }
+
+  function findRange(km){
+    km = Math.round(km);
+    for(var i=0;i<IDX.length;i++){
+      if(km >= IDX[i][0] && km <= IDX[i][1]) return {row:IDX[i], index:i};
+    }
+    if(km < IDX[0][0]) return {row:IDX[0], index:0};
+    return {row:IDX[IDX.length-1], index:IDX.length-1};
+  }
+
+  // ---------------- Servidores personalizados (adicionados pelo usuário, persistentes) ----------------
+  var SERVIDORES_CUSTOM_LS_KEY = 'icmsFrete_servidoresCustom';
+  (function carregarServidoresCustomLS(){
+    try{
+      var raw = localStorage.getItem(SERVIDORES_CUSTOM_LS_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(Array.isArray(parsed)) parsed.forEach(function(s){ SERVIDORES.push(s); });
+      }
+    } catch(e){ /* ignora e segue só com a lista padrão */ }
+  })();
+  function salvarServidoresCustomLS(lista){
+    try{ localStorage.setItem(SERVIDORES_CUSTOM_LS_KEY, JSON.stringify(lista)); }
+    catch(e){ /* localStorage indisponível — vale só para esta sessão */ }
+  }
+
+  // ---------------- Matrícula editável — vinculada ao servidor/cargo selecionado ----------------
+  var MATRICULA_OVERRIDES_LS_KEY = 'icmsFrete_matriculaOverrides';
+  var matriculaOverrides = {};
+  (function carregarMatriculaOverridesLS(){
+    try{
+      var raw = localStorage.getItem(MATRICULA_OVERRIDES_LS_KEY);
+      if(raw) matriculaOverrides = JSON.parse(raw) || {};
+    } catch(e){ matriculaOverrides = {}; }
+  })();
+  // aplica as matrículas já editadas anteriormente sobre a lista de servidores (originais e personalizados)
+  SERVIDORES.forEach(function(s){
+    if(matriculaOverrides[s[1]] !== undefined) s[2] = matriculaOverrides[s[1]];
+  });
+
+  function salvarMatriculaEditada(){
+    var servIdx = parseInt(selServidor.value, 10);
+    var serv = SERVIDORES[servIdx];
+    if(!serv) return;
+    var novaMatricula = $('f_matricula').value.trim();
+    if(novaMatricula === (serv[2] || '')) return; // nada mudou
+    serv[2] = novaMatricula;
+    matriculaOverrides[serv[1]] = novaMatricula;
+    try{ localStorage.setItem(MATRICULA_OVERRIDES_LS_KEY, JSON.stringify(matriculaOverrides)); }
+    catch(e){ /* localStorage indisponível — vale só para esta sessão */ }
+  }
+  $('f_matricula').addEventListener('blur', salvarMatriculaEditada);
+
+  // ---------------- Populate servidor select ----------------
+  var selServidor = $('f_servidor');
+  function popularSelectServidores(indiceSelecionado){
+    selServidor.innerHTML = '';
+    var indices = SERVIDORES.map(function(s, i){ return i; });
+    indices.sort(function(a, b){
+      return SERVIDORES[a][1].localeCompare(SERVIDORES[b][1], 'pt-BR');
+    });
+    indices.forEach(function(i){
+      var opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = SERVIDORES[i][1];
+      selServidor.appendChild(opt);
+    });
+    selServidor.value = indiceSelecionado;
+  }
+  popularSelectServidores(6); // default: CÍCERO ANTONIO DANTAS DA SILVA, matching original file
+  (function sincronizarMatriculaInicial(){
+    var serv = SERVIDORES[parseInt(selServidor.value, 10)];
+    $('f_matricula').value = serv ? (serv[2] || '') : '';
+  })();
+
+  $('btnNovoServidor').addEventListener('click', function(){
+    var painel = $('novoServidorPainel');
+    if(painel.style.display === 'block'){
+      painel.style.display = 'none';
+      return;
+    }
+    $('novoServ_nome').value = '';
+    $('novoServ_matricula').value = '';
+    $('novoServ_cargo').value = 'Auditor Fiscal de Tributos Estaduais';
+    painel.style.display = 'block';
+    $('novoServ_nome').focus();
+  });
+
+  $('btnCancelarNovoServidor').addEventListener('click', function(){
+    $('novoServidorPainel').style.display = 'none';
+  });
+
+  $('btnSalvarNovoServidor').addEventListener('click', function(){
+    var nome = $('novoServ_nome').value.trim();
+    if(!nome){
+      $('novoServ_nome').focus();
+      return;
+    }
+    var cargo = $('novoServ_cargo').value;
+    var matricula = $('novoServ_matricula').value.trim();
+    var novo = [cargo, nome, matricula];
+    SERVIDORES.push(novo);
+    // guarda só os servidores adicionados pelo usuário (os 31 originais continuam fixos no código)
+    var customAtuais = SERVIDORES.slice(31);
+    salvarServidoresCustomLS(customAtuais);
+    popularSelectServidores(SERVIDORES.length - 1);
+    $('f_matricula').value = matricula;
+    $('novoServidorPainel').style.display = 'none';
+    recalc();
+  });
+
+  // ---------------- Populate index table tab ----------------
+  var idxBody = $('idxBody');
+  IDX.forEach(function(r, i){
+    var tr = document.createElement('tr');
+    tr.dataset.idx = i;
+    var faixa = String(r[0]).padStart(4,'0') + ' a ' + String(r[1]).padStart(4,'0');
+    tr.innerHTML = '<td>'+faixa+'</td><td>'+fmtNum(r[2])+'</td><td>'+fmtNum(r[3])+'</td>';
+    idxBody.appendChild(tr);
+  });
+
+  // ---------------- Segmented controls ----------------
+  function wireSeg(containerId, onSelect){
+    var el = $(containerId);
+    el.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        el.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        onSelect(btn.dataset.val);
+        recalc();
+      });
+    });
+  }
+  wireSeg('segColuna', function(v){ state.coluna = v; });
+  wireSeg('segAliquota', function(v){ state.aliquota = parseFloat(v); });
+  wireSeg('segComRed', function(v){ state.comRed = (v === 'sim'); });
+  wireSeg('segCredito', function(v){ state.credito = (v === 'sim'); });
+
+  // ---------------- Máscara CNPJ / CPF ----------------
+  function maskCnpjCpf(raw){
+    var d = (raw || '').replace(/\D/g, '').slice(0, 14);
+    if(d.length <= 11){
+      var p1 = d.slice(0,3), p2 = d.slice(3,6), p3 = d.slice(6,9), p4 = d.slice(9,11);
+      var out = p1;
+      if(p2) out += '.' + p2;
+      if(p3) out += '.' + p3;
+      if(p4) out += '-' + p4;
+      return out;
+    } else {
+      var c1 = d.slice(0,2), c2 = d.slice(2,5), c3 = d.slice(5,8), c4 = d.slice(8,12), c5 = d.slice(12,14);
+      var out2 = c1;
+      if(c2) out2 += '.' + c2;
+      if(c3) out2 += '.' + c3;
+      if(c4) out2 += '/' + c4;
+      if(c5) out2 += '-' + c5;
+      return out2;
+    }
+  }
+  $('f_cnpj').addEventListener('input', function(){
+    var pos = this.selectionStart;
+    var lenAntes = this.value.length;
+    this.value = maskCnpjCpf(this.value);
+    var lenDepois = this.value.length;
+    this.selectionEnd = this.selectionStart = Math.max(0, pos + (lenDepois - lenAntes));
+  });
+
+  // ---------------- Input listeners ----------------
+  ['f_km','f_diesel','f_peso','f_recolhido'].forEach(function(id){
+    $(id).addEventListener('input', recalc);
+  });
+  ['f_nome','f_cnpj','f_ie','f_auto','f_comando','f_nfe','f_placas','f_origem','f_destino','f_in'].forEach(function(id){
+    $(id).addEventListener('input', recalc);
+  });
+  selServidor.addEventListener('change', function(){
+    var serv = SERVIDORES[parseInt(selServidor.value, 10)];
+    $('f_matricula').value = serv ? (serv[2] || '') : '';
+    recalc();
+  });
+  $('idxSearch').addEventListener('input', function(){
+    $('f_km').value = this.value;
+    recalc();
+  });
+
+  // ---------------- Cálculo automático de distância (Origem -> Destino) ----------------
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  function parseCityUf(raw){
+    // aceita "CIDADE/UF", "CIDADE - UF", "CIDADE,UF" ou "CIDADE UF"
+    var s = (raw || '').trim();
+    var m = s.match(/^(.+?)[\/\-,]\s*([A-Za-z]{2})$/);
+    if(m) return { city: m[1].trim(), uf: m[2].toUpperCase() };
+    var parts = s.split(/\s+/);
+    if(parts.length > 1 && /^[A-Za-z]{2}$/.test(parts[parts.length-1])){
+      return { city: parts.slice(0,-1).join(' '), uf: parts[parts.length-1].toUpperCase() };
+    }
+    return { city: s, uf: '' };
+  }
+
+  // ---------------- Cálculo de distância via Google Maps (opcional, requer chave própria) ----------------
+  var googleMapsLoadPromise = null;
+  function carregarGoogleMaps(apiKey){
+    if(googleMapsLoadPromise) return googleMapsLoadPromise;
+    googleMapsLoadPromise = new Promise(function(resolve, reject){
+      if(window.google && window.google.maps && window.google.maps.places && window.google.maps.DistanceMatrixService){
+        resolve();
+        return;
+      }
+      window.__onGoogleMapsLoaded = function(){ resolve(); };
+      var script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(apiKey) + '&v=beta&libraries=places&callback=__onGoogleMapsLoaded';
+      script.async = true;
+      script.onerror = function(){ reject(new Error('google_maps_script_falhou')); };
+      document.head.appendChild(script);
+    });
+    return googleMapsLoadPromise;
+  }
+
+  function routeDistanceKmGoogle(origemRaw, destinoRaw, apiKey){
+    return carregarGoogleMaps(apiKey).then(function(){
+      return new Promise(function(resolve, reject){
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix({
+          origins: [origemRaw + ', Brasil'],
+          destinations: [destinoRaw + ', Brasil'],
+          travelMode: 'DRIVING',
+          unitSystem: google.maps.UnitSystem.METRIC
+        }, function(response, status){
+          if(status !== 'OK'){ reject(new Error('google_status_' + status)); return; }
+          var el = response.rows && response.rows[0] && response.rows[0].elements && response.rows[0].elements[0];
+          if(!el || el.status !== 'OK'){ reject(new Error('google_elemento_' + (el ? el.status : 'vazio'))); return; }
+          resolve(el.distance.value / 1000); // metros -> km
+        });
+      });
+    });
+  }
+
+  async function geocodeViaNominatim(q){
+    var url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=' + encodeURIComponent(q);
+    var res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if(res.status === 429) throw new Error('nominatim_limite_de_uso_atingido');
+    if(!res.ok) throw new Error('nominatim_falhou');
+    var data = await res.json();
+    if(!data || !data.length) throw new Error('nominatim_nao_encontrou');
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+
+  async function geocodeViaPhoton(q){
+    var url = 'https://photon.komoot.io/api/?limit=1&lang=pt&q=' + encodeURIComponent(q + ', Brasil');
+    var res = await fetch(url);
+    if(res.status === 429) throw new Error('photon_limite_de_uso_atingido');
+    if(!res.ok) throw new Error('photon_falhou');
+    var data = await res.json();
+    var f = data && data.features && data.features[0];
+    if(!f) throw new Error('photon_nao_encontrou');
+    return { lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0] };
+  }
+
+  async function geocodeCity(raw){
+    var parsed = parseCityUf(raw);
+    var q = parsed.city + (parsed.uf ? (', ' + parsed.uf) : '') + ', Brasil';
+    try{
+      return await geocodeViaNominatim(q);
+    } catch(e1){
+      return await geocodeViaPhoton(q); // se o primeiro serviço falhar/for bloqueado, tenta uma fonte alternativa
+    }
+  }
+
+  async function routeViaOSRMPrincipal(a, b){
+    var url = 'https://router.project-osrm.org/route/v1/driving/' + a.lon + ',' + a.lat + ';' + b.lon + ',' + b.lat + '?overview=false';
+    var res = await fetch(url);
+    if(!res.ok) throw new Error('osrm_principal_falhou');
+    var data = await res.json();
+    if(!data.routes || !data.routes.length) throw new Error('osrm_principal_sem_rota');
+    return data.routes[0].distance / 1000;
+  }
+
+  async function routeViaOSRMEspelho(a, b){
+    var url = 'https://routing.openstreetmap.de/routed-car/route/v1/driving/' + a.lon + ',' + a.lat + ';' + b.lon + ',' + b.lat + '?overview=false';
+    var res = await fetch(url);
+    if(!res.ok) throw new Error('osrm_espelho_falhou');
+    var data = await res.json();
+    if(!data.routes || !data.routes.length) throw new Error('osrm_espelho_sem_rota');
+    return data.routes[0].distance / 1000;
+  }
+
+  function haversineKm(a, b){
+    var R = 6371;
+    var dLat = (b.lat - a.lat) * Math.PI / 180;
+    var dLon = (b.lon - a.lon) * Math.PI / 180;
+    var s = Math.sin(dLat/2)*Math.sin(dLat/2) +
+            Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+    return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+  }
+
+  async function routeDistanceKm(a, b){
+    try{
+      return { km: await routeViaOSRMPrincipal(a, b), estimado: false };
+    } catch(e1){
+      try{
+        return { km: await routeViaOSRMEspelho(a, b), estimado: false };
+      } catch(e2){
+        // Último recurso: linha reta com fator de correção para aproximar de rota rodoviária real
+        return { km: haversineKm(a, b) * 1.35, estimado: true };
+      }
+    }
+  }
+
+  var btnCalcKm = $('btnCalcKm');
+  var kmStatus = $('kmCalcStatus');
+  var kmCalcToken = 0; // evita que uma chamada antiga sobrescreva uma mais recente
+
+  async function calcularDistanciaAutomatica(){
+    var origemRaw = $('f_origem').value;
+    var destinoRaw = $('f_destino').value;
+    if(!origemRaw.trim() || !destinoRaw.trim()) return;
+
+    var apiKey = $('f_googleApiKey').value.trim();
+    var myToken = ++kmCalcToken;
+    btnCalcKm.disabled = true;
+    var originalLabel = btnCalcKm.textContent;
+    btnCalcKm.textContent = 'Calculando…';
+
+    // Caminho 1: Google Maps, se uma chave própria foi informada
+    if(apiKey){
+      kmStatus.textContent = 'Calculando via Google Maps…';
+      try{
+        var kmGoogle = await routeDistanceKmGoogle(origemRaw, destinoRaw, apiKey);
+        if(myToken !== kmCalcToken) return;
+        var kmRoundedG = Math.round(kmGoogle);
+        $('f_km').value = kmRoundedG;
+        kmStatus.innerHTML = 'Distância rodoviária calculada automaticamente: <b>' + kmRoundedG.toLocaleString('pt-BR') + ' km</b> (via Google Maps). Confira antes de autuar.';
+        recalc();
+        btnCalcKm.disabled = false;
+        btnCalcKm.textContent = originalLabel;
+        return;
+      } catch(errGoogle){
+        if(myToken !== kmCalcToken) return;
+        kmStatus.textContent = 'Google Maps falhou (' + (errGoogle && errGoogle.message) + ') — tentando via OpenStreetMap…';
+        // segue para o caminho gratuito abaixo
+      }
+    }
+
+    // Caminho 2: serviço gratuito (OpenStreetMap + OSRM)
+    try{
+      var origemGeo = await geocodeCity(origemRaw);
+      await sleep(1100); // respeita o limite de uso do serviço de geocodificação
+      var destinoGeo = await geocodeCity(destinoRaw);
+      if(myToken !== kmCalcToken) return; // Origem/Destino mudaram durante a espera
+      kmStatus.textContent = 'Calculando rota rodoviária…';
+      var rota = await routeDistanceKm(origemGeo, destinoGeo);
+      if(myToken !== kmCalcToken) return;
+      var kmRounded = Math.round(rota.km);
+      $('f_km').value = kmRounded;
+      if(rota.estimado){
+        kmStatus.innerHTML = 'Distância estimada automaticamente: <b>' + kmRounded.toLocaleString('pt-BR') + ' km</b> (linha reta com fator de correção — os serviços de rota estavam indisponíveis). Confira e ajuste manualmente antes de autuar.';
+      } else {
+        kmStatus.innerHTML = 'Distância rodoviária calculada automaticamente: <b>' + kmRounded.toLocaleString('pt-BR') + ' km</b> (rota estimada via OpenStreetMap/OSRM). Confira antes de autuar.';
+      }
+      recalc();
+    } catch(err){
+      if(myToken !== kmCalcToken) return;
+      var motivo = (err && err.message) ? err.message : 'erro desconhecido';
+      if(motivo.indexOf('limite_de_uso_atingido') !== -1){
+        kmStatus.textContent = 'O serviço gratuito de mapas atingiu o limite de uso no momento (muitas consultas em pouco tempo). Aguarde alguns minutos e tente de novo, ou informe a distância manualmente.';
+      } else {
+        var extra = (location.protocol === 'file:')
+          ? ' Este app está aberto direto do disco (file://) — em alguns casos isso pode ser bloqueado por segurança.'
+          : '';
+        kmStatus.textContent = 'Não foi possível calcular automaticamente agora (' + motivo + ').' + extra + ' Informe a distância manualmente.';
+      }
+    } finally {
+      if(myToken === kmCalcToken){
+        btnCalcKm.disabled = false;
+        btnCalcKm.textContent = originalLabel;
+      }
+    }
+  }
+
+  // Dispara automaticamente ao sair do campo (blur) ou parar de digitar (debounce), sem precisar clicar no botão
+  var kmAutoTimer = null;
+  function agendarCalculoAutomatico(){
+    kmStatus.textContent = 'Aguardando para calcular…';
+    clearTimeout(kmAutoTimer);
+    kmAutoTimer = setTimeout(calcularDistanciaAutomatica, 900);
+  }
+  ['f_origem','f_destino'].forEach(function(id){
+    $(id).addEventListener('input', agendarCalculoAutomatico);
+    $(id).addEventListener('blur', function(){
+      clearTimeout(kmAutoTimer);
+      calcularDistanciaAutomatica();
+    });
+  });
+  btnCalcKm.addEventListener('click', function(){
+    clearTimeout(kmAutoTimer);
+    calcularDistanciaAutomatica();
+  });
+
+  // Calcula já na abertura do app, para os valores padrão de Origem/Destino
+  agendarCalculoAutomatico();
+
+  // ---------------- Autopreenchimento de Origem/Destino via Google Places (novo componente — compatível com chaves atuais) ----------------
+  var autocompleteAtivo = { origem:false, destino:false };
+  function iniciarAutocompletePlaces(campoId, apiKey, opts){
+    opts = opts || {};
+    if(autocompleteAtivo[campoId] || !apiKey) return;
+    carregarGoogleMaps(apiKey).then(function(){
+      return google.maps.importLibrary('places');
+    }).then(function(placesLib){
+      if(autocompleteAtivo[campoId]) return;
+      if(!placesLib || !placesLib.PlaceAutocompleteElement){
+        throw new Error('PlaceAutocompleteElement indisponível — verifique se a "Places API (New)" está habilitada e se o faturamento está ativo.');
+      }
+      var inputEl = $(opts.inputId);
+      var container = $(opts.containerId);
+
+      var widget = new placesLib.PlaceAutocompleteElement({ includedRegionCodes: ['br'] });
+      if(inputEl.value) widget.setAttribute('placeholder', inputEl.value);
+
+      container.innerHTML = '';
+      container.appendChild(widget);
+      container.style.display = 'block';
+      inputEl.style.display = 'none';
+
+      widget.addEventListener('gmp-select', function(e){
+        var placePrediction = e.placePrediction;
+        if(!placePrediction) return;
+        var place = placePrediction.toPlace();
+        place.fetchFields({ fields: ['addressComponents', 'formattedAddress'] }).then(function(){
+          var cidade = '', uf = '';
+          (place.addressComponents || []).forEach(function(c){
+            if(c.types.indexOf('administrative_area_level_2') !== -1 && !cidade) cidade = c.longText;
+            if(c.types.indexOf('locality') !== -1) cidade = c.longText; // prioriza "locality" quando existir
+            if(c.types.indexOf('administrative_area_level_1') !== -1) uf = c.shortText;
+          });
+          inputEl.value = (cidade && uf) ? (cidade + '/' + uf) : (place.formattedAddress || inputEl.value);
+          if(opts.onPlaceChanged) opts.onPlaceChanged(inputEl.value);
+          recalc();
+          clearTimeout(kmAutoTimer);
+          calcularDistanciaAutomatica();
+        });
+      });
+
+      autocompleteAtivo[campoId] = true;
+      opts.onAtivo && opts.onAtivo();
+    }).catch(function(err){
+      console.warn('Autocomplete Google (' + campoId + ') falhou:', err);
+      opts.onErro && opts.onErro();
+    });
+  }
+
+  function ativarAutocompleteGoogle(){
+    var k = $('f_googleApiKey').value.trim();
+    if(!k) return;
+    // Origem e Destino: mesma experiência de autocomplete do Google, para todo o Brasil
+    iniciarAutocompletePlaces('origem', k, {
+      inputId: 'f_origem',
+      containerId: 'origemGmpContainer',
+      onAtivo: function(){
+        $('origemGoogleBadge').style.display = 'inline';
+        $('googleAutocompleteStatus').textContent = '✓ Autopreenchimento do Google Maps ativo em Origem e Destino.';
+      },
+      onErro: function(){ $('googleAutocompleteStatus').textContent = '⚠ Não foi possível ativar o autopreenchimento do Google Maps com essa chave. Verifique se "Places API (New)" está habilitada e o faturamento ativo no Google Cloud.'; }
+    });
+    iniciarAutocompletePlaces('destino', k, {
+      inputId: 'f_destino',
+      containerId: 'destinoGmpContainer',
+      onPlaceChanged: registrarDestinoDigitado,
+      onAtivo: function(){
+        $('destinoGoogleBadge').style.display = 'inline';
+        $('googleAutocompleteStatus').textContent = '✓ Autopreenchimento do Google Maps ativo em Origem e Destino.';
+      },
+      onErro: function(){ $('googleAutocompleteStatus').textContent = '⚠ Não foi possível ativar o autopreenchimento do Google Maps com essa chave. Verifique se "Places API (New)" está habilitada e o faturamento ativo no Google Cloud.'; }
+    });
+  }
+  $('f_googleApiKey').addEventListener('blur', ativarAutocompleteGoogle);
+  var googleKeyTimer = null;
+  $('f_googleApiKey').addEventListener('input', function(){
+    clearTimeout(googleKeyTimer);
+    var k = this.value.trim();
+    if(k.length < 30) return; // chaves do Google normalmente têm ~39 caracteres — evita tentar com texto incompleto
+    googleKeyTimer = setTimeout(ativarAutocompleteGoogle, 600);
+  });
+
+  // ---------------- Tabs ----------------
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ activateTab(btn.dataset.tab); });
+  });
+  function activateTab(name){
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === name); });
+    document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+    $('tab-' + name).classList.add('active');
+  }
+  $('btnBack').addEventListener('click', function(){ activateTab('calc'); });
+  $('btnPrint').addEventListener('click', function(){ window.print(); });
+
+  var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  // ---------------- Core recalculation ----------------
+  function recalc(){
+    var km = parseFloat($('f_km').value) || 0;
+    var diesel = parseFloat($('f_diesel').value) || 0;
+    var peso = parseFloat($('f_peso').value) || 0;
+    var D19 = parseFloat($('f_recolhido').value) || 0;
+    var origemPreenchida = !!$('f_origem').value.trim();
+    $('avisoRecolhidoZeroCard').style.display = (D19 === 0 && origemPreenchida) ? 'block' : 'none';
+    var servIdx = parseInt(selServidor.value, 10);
+    var serv = SERVIDORES[servIdx] || ['','',''];
+
+    $('f_cargo').value = serv[0];
+
+    var found = findRange(km);
+    var row = found.row;
+    var faixaStr = String(row[0]).padStart(4,'0') + ' a ' + String(row[1]).padStart(4,'0');
+    var indice = state.coluna === 'A' ? row[2] : row[3];
+
+    $('kmDetected').textContent = 'Faixa: ' + faixaStr;
+    $('indiceAplicado').value = fmtNum(indice);
+
+    // highlight in table tab
+    document.querySelectorAll('#idxBody tr').forEach(function(tr){
+      tr.classList.toggle('hit', parseInt(tr.dataset.idx,10) === found.index);
+    });
+
+    // D17..D22
+    var D17 = indice * diesel * peso;              // Base de cálculo
+    var D18 = D17 * (state.aliquota / 100);         // ICMS devido
+    var D20 = D18 - D19;                            // ICMS frete a recolher
+    var D21 = D18 !== 0 ? (D19 / D18) : 0;           // comparativo
+    var D22 = D20 * 0.9;                             // multa
+
+    var menorCard = $('avisoRecolhidoMenorCard');
+    if(D19 > 0 && D18 > 0 && D21 < 1){
+      var percentualRecolhido = D21 * 100;
+      $('avisoRecolhidoMenor').textContent = 'O SUJEITO PASSIVO RECOLHEU ' + fmtNum(percentualRecolhido) + '% DO ICMS CALCULADO PELA PAUTA';
+      menorCard.style.display = 'block';
+      $('doc_avisoMenor').textContent = 'O SUJEITO PASSIVO RECOLHEU ' + fmtNum(percentualRecolhido) + '% DO ICMS CALCULADO PELA PAUTA';
+      $('doc_avisoMenor').style.display = 'block';
+    } else {
+      menorCard.style.display = 'none';
+      $('doc_avisoMenor').style.display = 'none';
+    }
+    $('doc_avisoZero').style.display = (D19 === 0 && origemPreenchida) ? 'block' : 'none';
+
+    $('r_bc').textContent = fmtBRL(D17);
+    $('r_devido').textContent = fmtBRL(D18);
+    $('r_devidoLabel').textContent = state.aliquota === 12 ? 'ICMS devido (alíquota interestadual)' : 'ICMS devido (alíquota cheia)';
+    $('bcFormula').innerHTML = fmtNum(peso) + ' <span style="opacity:0.6;">(peso, t)</span> × ' +
+      fmtBRL(diesel) + ' <span style="opacity:0.6;">(diesel)</span> × ' +
+      fmtNum(indice) + ' <span style="opacity:0.6;">(índice)</span> = <b>' + fmtBRL(D17) + '</b>';
+    $('icmsFormula').innerHTML = '<b>ICMS a recolher:</b> ' + fmtBRL(D17) + ' <span style="opacity:0.6;">(BC)</span> × ' +
+      fmtNum(state.aliquota) + '% <span style="opacity:0.6;">(alíquota)</span> = ' + fmtBRL(D18) +
+      ' <span style="opacity:0.6;">(ICMS devido)</span> − ' + fmtBRL(D19) + ' <span style="opacity:0.6;">(ICMS recolhido)</span> = <b>' + fmtBRL(D20) + '</b>';
+    $('r_multa').textContent = fmtBRL(D22);
+
+    // ---- Panel Pauta (H) ----
+    var H10 = (D19 > D18) ? 0 : D18;
+    var H11 = -(H10/2);
+    var H12 = H10 + H11;
+    var H13 = state.credito ? -(H12*0.2) : 0;
+    var H14 = H12 + H13;
+    var H15 = (D19 > D18) ? 0 : -D19;
+    var H16 = H14 + H15;
+    var H17 = H14 !== 0 ? -(H15/H14) : 0;
+
+    $('h10').textContent = fmtNum(H10);
+    $('h11').textContent = fmtNum(H11);
+    $('h12').textContent = fmtNum(H12);
+    $('h13').textContent = fmtNum(H13);
+    $('h14').textContent = fmtNum(H14);
+    $('h15').textContent = fmtNum(H15);
+    $('h16').textContent = fmtNum(H16);
+    $('h16label').textContent = H16 < 0 ? 'ICMS a restituir' : 'ICMS a pagar';
+    $('h17').textContent = fmtPct(H17);
+    $('h17bar').style.width = clampPct(H17) + '%';
+
+    // ---- Panel Contribuinte (I) ----
+    var I10;
+    if(state.comRed && state.credito) I10 = (D19/0.8) * 2;
+    else if(!state.comRed && !state.credito) I10 = D19;
+    else if(!state.comRed && state.credito) I10 = D19/0.8;
+    else I10 = D19 * 2;
+
+    var I11 = !state.comRed ? 0 : -(I10/2);
+    var I12 = I10 + I11;
+    var I13 = -(state.credito ? I12*0.2 : 0);
+    var I14 = I12 + I13;
+    var I15 = -D19;
+    var I16 = I14 + I15;
+    var I17 = I14 !== 0 ? -(I15/I14) : 0;
+    var I19 = D17;
+    var I20 = I10 / 0.12;
+    var I21 = I19 !== 0 ? (I20/I19) : 0;
+
+    $('i10').textContent = fmtNum(I10);
+    $('i11').textContent = fmtNum(I11);
+    $('i12').textContent = fmtNum(I12);
+    $('i13').textContent = fmtNum(I13);
+    $('i14').textContent = fmtNum(I14);
+    $('i15').textContent = fmtNum(I15);
+    $('i16').textContent = fmtNum(I16);
+    $('i16label').textContent = I16 < 0 ? 'ICMS a restituir' : 'ICMS a pagar';
+    $('i17').textContent = fmtPct(I17);
+    $('i17bar').style.width = clampPct(I17) + '%';
+
+    $('i19').textContent = fmtBRL(I19);
+    $('i20').textContent = fmtBRL(I20);
+    $('i21').textContent = fmtPct(I21);
+    $('i21bar').style.width = clampPct(I21) + '%';
+
+    var cmpNote = $('compareNote');
+    if(I19 > I20){
+      cmpNote.className = 'note alert';
+      cmpNote.textContent = 'A base de cálculo pela Pauta (' + fmtBRL(I19) + ') é maior que a declarada pelo contribuinte (' + fmtBRL(I20) + '). Pelo Art. 1º, prevalece o maior valor — a Pauta.';
+    } else if(I20 > I19){
+      cmpNote.className = 'note ok';
+      cmpNote.textContent = 'A base declarada pelo contribuinte (' + fmtBRL(I20) + ') é maior que a da Pauta (' + fmtBRL(I19) + '). Pelo Art. 1º, prevalece o maior valor — a declarada.';
+    } else {
+      cmpNote.className = 'note';
+      cmpNote.textContent = 'As bases de cálculo (Pauta e declarada) coincidem.';
+    }
+
+    // Seal
+    var seal = $('mainSeal');
+    seal.classList.toggle('pos', H16 < 0);
+    $('sealLabel').textContent = H16 < 0 ? 'ICMS a restituir' : 'ICMS a pagar';
+    $('sealValue').textContent = fmtBRL(Math.abs(H16));
+
+    // IN references
+    var inVal = $('f_in').value || '35/2026';
+    $('letterheadIN').textContent = 'IN ' + inVal + '/GAB/CRE';
+    $('doc_inhead').textContent = 'IN ' + inVal + '/GAB/CRE';
+    $('doc_infoot1').textContent = 'IN ' + inVal + '/GAB/CRE';
+    $('bcArtFormula').textContent = 'BC transporte rodoviário = Peso × Diesel outros × Índice (Art. 10 da IN ' + inVal + '/GAB/CRE)';
+
+    // ---------------- Documento tab ----------------
+    $('doc_nome').textContent = $('f_nome').value || '—';
+    $('doc_nfe').textContent = $('f_nfe').value || '—';
+    $('doc_cnpj').textContent = $('f_cnpj').value || '—';
+    $('doc_origem').textContent = $('f_origem').value || '—';
+    $('doc_auto').textContent = $('f_auto').value || '—';
+    $('doc_destino').textContent = $('f_destino').value || '—';
+    $('doc_comando').textContent = $('f_comando').value || '—';
+    $('doc_placas').textContent = $('f_placas').value || '—';
+
+    $('doc_formula').innerHTML = '<b>BC transporte rodoviário = Peso × Diesel outros × Índice</b> (Art. 10 da IN ' + inVal + '/GAB/CRE)';
+
+    $('doc_faixa').textContent = faixaStr;
+    $('doc_a').textContent = fmtNum(indice);
+    $('doc_b').textContent = fmtNum(diesel);
+    $('doc_c').textContent = fmtNum(peso);
+    $('doc_d').textContent = fmtNum(D17);
+    $('doc_aliqlabel').textContent = state.aliquota === 12 ? 'alíquota interestadual 12%' : 'alíquota 19,5% (Art. 12, §1º, V, RICMS/RO)';
+    $('doc_e').textContent = fmtNum(D18);
+    $('doc_f').textContent = fmtNum(D19);
+    $('doc_g').textContent = fmtNum(D20);
+    $('doc_h').textContent = (D21*100).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}) + '%';
+    $('doc_i').textContent = fmtNum(D22);
+
+    var today = new Date();
+    $('doc_placedate').textContent = 'Vilhena, RO, ' + today.getDate() + ' de ' + MESES[today.getMonth()] + ' de ' + today.getFullYear() + '.';
+
+    $('doc_servidor_nome').textContent = serv[1] || '—';
+    $('doc_servidor_cargo').textContent = serv[0] || '—';
+    $('doc_servidor_matricula').textContent = serv[2] ? ('Matrícula: ' + serv[2]) : '—';
+
+    ultimoResumoICMS = { devido: D18, recolhido: D19, aRecolher: D20 };
+    if(graficoModalAberto) renderGraficoModal();
+  }
+
+  // ---------------- Auto-preenchimento do valor do diesel (mês anterior, RONDÔNIA) ----------------
+  function atualizarDieselAutomatico(){
+    var d = getPrevMonthDiesel();
+    $('f_diesel').value = d.value.toFixed(2);
+    var hint = $('dieselSourceHint');
+    if(d.found){
+      hint.innerHTML = 'PMPF médio ponderado · RONDÔNIA · <b>' + MESES_ABREV[d.month] + '/' + d.year + '</b> (mês anterior) · SIDIEC/SEFIN-RO';
+      hint.classList.remove('hint-warn');
+    } else {
+      hint.innerHTML = '⚠ Ainda não há, nesta versão do app, o valor do mês anterior — exibindo a última referência conhecida (' + MESES_ABREV[d.month] + '/' + d.year + ', SIDIEC/SEFIN-RO). Confira o valor atual no link abaixo e ajuste manualmente.';
+    }
+  }
+  atualizarDieselAutomatico();
+
+  // ---------------- Tabela de Cadastro ----------------
+  // ---------------- Popup: Resumo gráfico do ICMS ---------------
+  var ultimoResumoICMS = { devido:0, recolhido:0, aRecolher:0 };
+  var graficoModalAberto = false;
+
+  function renderGraficoModal(){
+    var devido = ultimoResumoICMS.devido || 0;
+    var recolhido = ultimoResumoICMS.recolhido || 0;
+    var aRecolher = ultimoResumoICMS.aRecolher || 0;
+    var pctRecolhido = devido > 0 ? Math.max(0, Math.min(1, recolhido / devido)) : 0;
+    var pctPendente = 1 - pctRecolhido;
+    var maiorBarra = Math.max(devido, recolhido, Math.abs(aRecolher), 1);
+
+    // Gráfico de rosca (donut) via SVG — recolhido (verde) x pendente (dourado)
+    var R = 42, C = 2 * Math.PI * R;
+    var segRecolhido = C * pctRecolhido;
+    var donutSvg =
+      '<svg viewBox="0 0 110 110" width="150" height="150">' +
+        '<circle cx="55" cy="55" r="' + R + '" fill="none" stroke="#EFE3C0" stroke-width="16"/>' +
+        '<circle cx="55" cy="55" r="' + R + '" fill="none" stroke="#2B6B4C" stroke-width="16" ' +
+          'stroke-dasharray="' + segRecolhido.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-linecap="round" ' +
+          'transform="rotate(-90 55 55)"/>' +
+        '<text x="55" y="51" text-anchor="middle" font-size="17" font-weight="700" font-family="IBM Plex Mono, monospace" fill="#211F17">' + Math.round(pctRecolhido*100) + '%</text>' +
+        '<text x="55" y="66" text-anchor="middle" font-size="8.5" font-family=\'IBM Plex Sans, sans-serif\' fill="#5B564A">recolhido</text>' +
+      '</svg>';
+
+    var pctMsgClass = pctRecolhido >= 1 ? 'ok' : (pctRecolhido === 0 ? 'alert' : '');
+    var pctMsgBg = pctRecolhido >= 1 ? 'var(--green-soft)' : (pctRecolhido === 0 ? 'var(--red-soft)' : 'var(--gold-soft)');
+    var pctMsgColor = pctRecolhido >= 1 ? 'var(--green)' : (pctRecolhido === 0 ? 'var(--red)' : '#5B4A1B');
+    var pctMsgTexto = pctRecolhido >= 1
+      ? '✓ O valor recolhido cobre 100% (ou mais) do ICMS devido.'
+      : '⚠ Falta recolher ' + fmtPct(pctPendente) + ' do ICMS devido (' + fmtBRL(Math.max(aRecolher,0)) + ').';
+
+    $('graficoModalBody').innerHTML =
+      '<div class="grafico-kpis">' +
+        '<div class="grafico-kpi devido"><div class="gl">ICMS devido</div><div class="gv">' + fmtBRL(devido) + '</div></div>' +
+        '<div class="grafico-kpi recolhido"><div class="gl">ICMS recolhido</div><div class="gv">' + fmtBRL(recolhido) + '</div></div>' +
+        '<div class="grafico-kpi arecolher"><div class="gl">ICMS a recolher</div><div class="gv">' + fmtBRL(aRecolher) + '</div></div>' +
+      '</div>' +
+
+      '<div class="grafico-bars">' +
+        '<div class="grafico-bar-row">' +
+          '<div class="grafico-bar-label"><span>ICMS devido</span><span>' + fmtBRL(devido) + '</span></div>' +
+          '<div class="grafico-bar-track"><div class="grafico-bar-fill" style="width:' + (100*devido/maiorBarra) + '%; background:var(--primary-2);"></div></div>' +
+        '</div>' +
+        '<div class="grafico-bar-row">' +
+          '<div class="grafico-bar-label"><span>ICMS recolhido</span><span>' + fmtBRL(recolhido) + '</span></div>' +
+          '<div class="grafico-bar-track"><div class="grafico-bar-fill" style="width:' + (100*recolhido/maiorBarra) + '%; background:var(--green);"></div></div>' +
+        '</div>' +
+        '<div class="grafico-bar-row">' +
+          '<div class="grafico-bar-label"><span>ICMS a recolher (devido − recolhido)</span><span>' + fmtBRL(aRecolher) + '</span></div>' +
+          '<div class="grafico-bar-track"><div class="grafico-bar-fill" style="width:' + (100*Math.abs(aRecolher)/maiorBarra) + '%; background:var(--gold);"></div></div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="grafico-donut-wrap">' +
+        donutSvg +
+        '<div class="grafico-legend">' +
+          '<div><span class="sw" style="background:#2B6B4C;"></span> Recolhido — ' + fmtPct(pctRecolhido) + ' (' + fmtBRL(recolhido) + ')</div>' +
+          '<div><span class="sw" style="background:#EFE3C0;"></span> Pendente — ' + fmtPct(pctPendente) + ' (' + fmtBRL(Math.max(aRecolher,0)) + ')</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="grafico-pct-msg" style="background:' + pctMsgBg + '; color:' + pctMsgColor + ';">' + pctMsgTexto + '</div>';
+  }
+
+  function ajustarZoomGraficoParaTela(){
+    window.__ajustandoZoomAbertura = true;
+    var painel = $('graficoPanel');
+    var corpo = $('graficoModalBody');
+    var cab = $('graficoDragHandle');
+    var margem = 64; // folga de segurança (topo + base + margem de erro de medição)
+
+    // mede o conteúdo no tamanho natural (sem escala) antes de decidir se precisa reduzir
+    corpo.style.transform = 'none';
+    corpo.style.width = 'auto';
+    corpo.style.height = 'auto';
+    painel.style.height = 'auto';
+
+    var alturaCabecalho = cab.getBoundingClientRect().height;
+    var alturaConteudoNatural = corpo.scrollHeight;
+    var alturaDisponivel = window.innerHeight - margem - alturaCabecalho;
+
+    if(alturaConteudoNatural > alturaDisponivel && alturaDisponivel > 0){
+      var escala = Math.max(0.4, alturaDisponivel / alturaConteudoNatural);
+      var larguraNatural = corpo.getBoundingClientRect().width;
+      corpo.style.transform = 'scale(' + escala.toFixed(3) + ')';
+      corpo.style.width = larguraNatural + 'px';
+      corpo.style.height = alturaConteudoNatural + 'px';
+      painel.style.height = (alturaCabecalho + Math.ceil(alturaConteudoNatural * escala) + 2) + 'px';
+    } else {
+      // mesmo sem precisar reduzir, fixa a altura explícita (evita depender só do max-height do CSS)
+      painel.style.height = (alturaCabecalho + alturaConteudoNatural + 2) + 'px';
+    }
+    setTimeout(function(){ window.__ajustandoZoomAbertura = false; }, 150);
+  }
+
+  function abrirGraficoModal(){
+    graficoModalAberto = true;
+    renderGraficoModal();
+    // reseta qualquer tamanho/posição/escala de uma sessão anterior, para abrir sempre ajustado à tela atual
+    var painel = $('graficoPanel');
+    painel.style.left = '';
+    painel.style.top = '20px';
+    painel.style.right = '24px';
+    painel.style.width = '480px';
+    painel.style.height = 'auto';
+    painel.classList.add('open');
+    requestAnimationFrame(ajustarZoomGraficoParaTela);
+  }
+  window.addEventListener('resize', function(){
+    if(graficoModalAberto) ajustarZoomGraficoParaTela();
+  });
+  function fecharGraficoModal(){
+    graficoModalAberto = false;
+    $('graficoPanel').classList.remove('open');
+  }
+  $('btnAbrirGrafico').addEventListener('click', abrirGraficoModal);
+  $('btnFecharGrafico').addEventListener('click', fecharGraficoModal);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') fecharGraficoModal();
+  });
+
+  // Arrastar o painel pela barra de título (mouse e toque)
+  (function tornarPainelArrastavel(){
+    var painel = $('graficoPanel');
+    var alca = $('graficoDragHandle');
+    var arrastando = false, offsetX = 0, offsetY = 0;
+
+    function iniciar(clientX, clientY){
+      var rect = painel.getBoundingClientRect();
+      // solta o painel do ancoramento inicial (top/right) para poder mover livremente
+      painel.style.right = 'auto';
+      painel.style.left = rect.left + 'px';
+      painel.style.top = rect.top + 'px';
+      offsetX = clientX - rect.left;
+      offsetY = clientY - rect.top;
+      arrastando = true;
+      document.body.style.userSelect = 'none';
+    }
+    function mover(clientX, clientY){
+      if(!arrastando) return;
+      var maxLeft = window.innerWidth - 60;
+      var maxTop = window.innerHeight - 40;
+      var novoLeft = Math.min(Math.max(0, clientX - offsetX), maxLeft);
+      var novoTop = Math.min(Math.max(0, clientY - offsetY), maxTop);
+      painel.style.left = novoLeft + 'px';
+      painel.style.top = novoTop + 'px';
+    }
+    function soltar(){
+      arrastando = false;
+      document.body.style.userSelect = '';
+    }
+
+    alca.addEventListener('mousedown', function(e){
+      if(e.target.closest('.grafico-close')) return;
+      iniciar(e.clientX, e.clientY);
+    });
+    document.addEventListener('mousemove', function(e){ mover(e.clientX, e.clientY); });
+    document.addEventListener('mouseup', soltar);
+
+    alca.addEventListener('touchstart', function(e){
+      if(e.target.closest('.grafico-close')) return;
+      var t = e.touches[0];
+      iniciar(t.clientX, t.clientY);
+    }, { passive:true });
+    document.addEventListener('touchmove', function(e){
+      if(!arrastando) return;
+      var t = e.touches[0];
+      mover(t.clientX, t.clientY);
+    }, { passive:true });
+    document.addEventListener('touchend', soltar);
+  })();
+
+  // Redimensionar o painel por qualquer lado ou canto
+  (function tornarPainelRedimensionavel(){
+    var painel = $('graficoPanel');
+    var MIN_W = 320, MIN_H = 260;
+    var dir = null, startX, startY, startW, startH, startLeft, startTop;
+
+    function iniciar(direcao, clientX, clientY){
+      var rect = painel.getBoundingClientRect();
+      // fixa o painel em left/top/width/height explícitos antes de redimensionar
+      painel.style.right = 'auto';
+      painel.style.left = rect.left + 'px';
+      painel.style.top = rect.top + 'px';
+      painel.style.width = rect.width + 'px';
+      painel.style.height = rect.height + 'px';
+      dir = direcao;
+      startX = clientX; startY = clientY;
+      startW = rect.width; startH = rect.height;
+      startLeft = rect.left; startTop = rect.top;
+      document.body.style.userSelect = 'none';
+    }
+    function mover(clientX, clientY){
+      if(!dir) return;
+      var dx = clientX - startX, dy = clientY - startY;
+      var novaW = startW, novaH = startH, novoLeft = startLeft, novoTop = startTop;
+
+      if(dir.indexOf('e') !== -1) novaW = Math.max(MIN_W, startW + dx);
+      if(dir.indexOf('s') !== -1) novaH = Math.max(MIN_H, startH + dy);
+      if(dir.indexOf('w') !== -1){
+        novaW = Math.max(MIN_W, startW - dx);
+        novoLeft = startLeft + (startW - novaW);
+      }
+      if(dir.indexOf('n') !== -1){
+        novaH = Math.max(MIN_H, startH - dy);
+        novoTop = startTop + (startH - novaH);
+      }
+
+      painel.style.width = novaW + 'px';
+      painel.style.height = novaH + 'px';
+      painel.style.left = novoLeft + 'px';
+      painel.style.top = novoTop + 'px';
+    }
+    function soltar(){
+      dir = null;
+      document.body.style.userSelect = '';
+    }
+
+    painel.querySelectorAll('.rsz-handle').forEach(function(handle){
+      var direcao = handle.dataset.dir;
+      handle.addEventListener('mousedown', function(e){
+        e.preventDefault();
+        iniciar(direcao, e.clientX, e.clientY);
+      });
+      handle.addEventListener('touchstart', function(e){
+        var t = e.touches[0];
+        iniciar(direcao, t.clientX, t.clientY);
+      }, { passive:true });
+    });
+    document.addEventListener('mousemove', function(e){ mover(e.clientX, e.clientY); });
+    document.addEventListener('mouseup', soltar);
+    document.addEventListener('touchmove', function(e){
+      if(!dir) return;
+      var t = e.touches[0];
+      mover(t.clientX, t.clientY);
+    }, { passive:true });
+    document.addEventListener('touchend', soltar);
+  })();
+
+  // Escala o conteúdo do gráfico proporcionalmente ao tamanho do painel (altura e largura)
+  (function tornarGraficoEscalavel(){
+    var painel = $('graficoPanel');
+    var corpo = $('graficoModalBody');
+    var BASE_W = 444, BASE_H = 420; // dimensões de referência (largura/altura "confortável" do conteúdo)
+    var alturaCabecalho = 0;
+
+    function aplicarEscala(){
+      if(window.__ajustandoZoomAbertura) return; // evita conflitar com o ajuste automático de abertura/tela
+      if(!alturaCabecalho){
+        var cab = $('graficoDragHandle');
+        alturaCabecalho = cab ? cab.getBoundingClientRect().height : 54;
+      }
+      var larguraDisponivel = painel.clientWidth;
+      var alturaDisponivel = painel.clientHeight - alturaCabecalho;
+      if(larguraDisponivel <= 0 || alturaDisponivel <= 0) return;
+
+      var escala = Math.min(larguraDisponivel / BASE_W, alturaDisponivel / BASE_H);
+      escala = Math.max(0.55, Math.min(1.6, escala)); // limites para não ficar ilegível nem gigante
+
+      corpo.style.transform = 'scale(' + escala.toFixed(3) + ')';
+      corpo.style.width = (larguraDisponivel / escala) + 'px';
+      corpo.style.height = (alturaDisponivel / escala) + 'px';
+    }
+
+    if(window.ResizeObserver){
+      new ResizeObserver(aplicarEscala).observe(painel);
+    } else {
+      // fallback simples para navegadores sem ResizeObserver: reaplica a cada interação de arraste/redimensionamento
+      document.addEventListener('mouseup', aplicarEscala);
+      document.addEventListener('touchend', aplicarEscala);
+    }
+    window.__aplicarEscalaGrafico = aplicarEscala; // permite reaplicar logo após abrir o painel
+  })();
+
+  var CADASTRO_LS_KEY = 'icmsFrete_cadastroRegistros';
+  var cadastroRegistros = [];
+  function salvarCadastroLS(){
+    try{ localStorage.setItem(CADASTRO_LS_KEY, JSON.stringify(cadastroRegistros)); }
+    catch(e){ /* localStorage indisponível neste ambiente — os registros continuam funcionando só nesta sessão */ }
+  }
+  function carregarCadastroLS(){
+    try{
+      var raw = localStorage.getItem(CADASTRO_LS_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(Array.isArray(parsed)) cadastroRegistros = parsed;
+      }
+    } catch(e){ /* ignora e começa com tabela vazia */ }
+  }
+  carregarCadastroLS();
+
+  // Os registros já ficam salvos automaticamente neste navegador (mesma lógica de outros apps do gênero).
+  // O aviso abaixo só existe para o caso raro de o navegador bloquear armazenamento neste arquivo específico.
+  (function avisoPersistencia(){
+    var hint = $('cadastroPersistHint');
+    hint.innerHTML = 'Os registros ficam salvos automaticamente neste navegador, no <b>mesmo arquivo</b> que você abrir — ' +
+      'sem precisar clicar em nada. Use Exportar/Importar só se quiser levar os registros para outro computador/navegador, ' +
+      'ou como backup extra. <span style="opacity:0.75;">Atenção: se você baixar uma versão nova do app, ela conta como um ' +
+      'arquivo diferente e começa com a tabela vazia — nesse caso, importe o backup exportado da versão anterior.</span>';
+  })();
+
+  $('btnExportCadastro').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(cadastroRegistros, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var ts = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = 'cadastro-icms-frete-' + ts + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  $('btnImportCadastro').addEventListener('click', function(){
+    $('fileImportCadastro').click();
+  });
+
+  $('fileImportCadastro').addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(evt){
+      try{
+        var parsed = JSON.parse(evt.target.result);
+        if(!Array.isArray(parsed)) throw new Error('formato inválido');
+        var acrescentar = cadastroRegistros.length > 0 &&
+          confirm('Já existem ' + cadastroRegistros.length + ' registro(s) na tabela. Clique OK para ACRESCENTAR os importados aos existentes, ou Cancelar para SUBSTITUIR tudo pelos importados.');
+        cadastroRegistros = acrescentar ? cadastroRegistros.concat(parsed) : parsed;
+        renderCadastro();
+      } catch(err){
+        alert('Não foi possível importar: o arquivo não é um JSON válido de registros deste app.');
+      } finally {
+        e.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // Copiar/colar em texto — útil para levar os registros para outro computador ou celular
+  // sem precisar manusear arquivo (ex.: colar num WhatsApp/e-mail para si mesmo e colar de volta lá).
+  $('btnCopyCadastro').addEventListener('click', function(){
+    var texto = JSON.stringify(cadastroRegistros);
+    var btn = $('btnCopyCadastro');
+    var original = btn.textContent;
+    function avisarSucesso(){
+      btn.textContent = '✓ Copiado!';
+      setTimeout(function(){ btn.textContent = original; }, 1500);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(texto).then(avisarSucesso).catch(function(){
+        prompt('Não deu para copiar automaticamente. Copie o texto abaixo manualmente:', texto);
+      });
+    } else {
+      prompt('Copie o texto abaixo manualmente (Ctrl+C ou Cmd+C):', texto);
+    }
+  });
+
+  $('btnPasteCadastro').addEventListener('click', function(){
+    var texto = prompt('Cole aqui o texto copiado no outro computador/celular:');
+    if(!texto) return;
+    try{
+      var parsed = JSON.parse(texto);
+      if(!Array.isArray(parsed)) throw new Error('formato inválido');
+      var acrescentar = cadastroRegistros.length > 0 &&
+        confirm('Já existem ' + cadastroRegistros.length + ' registro(s) na tabela. Clique OK para ACRESCENTAR os colados aos existentes, ou Cancelar para SUBSTITUIR tudo pelos colados.');
+      cadastroRegistros = acrescentar ? cadastroRegistros.concat(parsed) : parsed;
+      renderCadastro();
+    } catch(err){
+      alert('Não foi possível reconhecer esse texto como registros válidos deste app.');
+    }
+  });
+
+  function escapeHtml(s){
+    return (s || '').replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function atualizarNomesDatalist(){
+    var nomesUnicos = [];
+    cadastroRegistros.forEach(function(r){
+      if(r.nome && nomesUnicos.indexOf(r.nome) === -1) nomesUnicos.push(r.nome);
+    });
+    $('nomesCadastroList').innerHTML = nomesUnicos.map(function(n){
+      return '<option value="' + escapeHtml(n) + '"></option>';
+    }).join('');
+  }
+
+  // ---------------- Destinos digitados manualmente (para autocompletar futuras entradas) ----------------
+  var DESTINOS_LS_KEY = 'icmsFrete_destinosDigitados';
+  var destinosDigitados = [];
+  (function carregarDestinosDigitadosLS(){
+    try{
+      var raw = localStorage.getItem(DESTINOS_LS_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(Array.isArray(parsed)) destinosDigitados = parsed;
+      }
+    } catch(e){ /* ignora e começa vazio */ }
+  })();
+  function salvarDestinosDigitadosLS(){
+    try{ localStorage.setItem(DESTINOS_LS_KEY, JSON.stringify(destinosDigitados)); }
+    catch(e){ /* localStorage indisponível — vale só para esta sessão */ }
+  }
+  function registrarDestinoDigitado(valor){
+    valor = (valor || '').trim();
+    if(!valor) return;
+    var jaExiste = destinosDigitados.some(function(d){ return d.toLowerCase() === valor.toLowerCase(); });
+    if(!jaExiste){
+      destinosDigitados.push(valor);
+      salvarDestinosDigitadosLS();
+      atualizarDestinosDatalist();
+    }
+  }
+  $('f_destino').addEventListener('blur', function(){ registrarDestinoDigitado(this.value); });
+
+  function atualizarDestinosDatalist(){
+    var destinosUnicos = destinosDigitados.slice();
+    cadastroRegistros.forEach(function(r){
+      if(r.destino && destinosUnicos.indexOf(r.destino) === -1) destinosUnicos.push(r.destino);
+    });
+    todosMunicipiosBR.forEach(function(m){
+      if(destinosUnicos.indexOf(m) === -1) destinosUnicos.push(m);
+    });
+    $('municipiosList').innerHTML = destinosUnicos.map(function(d){
+      return '<option value="' + escapeHtml(d) + '"></option>';
+    }).join('');
+  }
+
+  // ---------------- Todos os municípios do Brasil (IBGE) para sugestão no Destino ----------------
+  var todosMunicipiosBR = [];
+  var municipiosBRCarregados = false;
+  // ---------------- Dropdown próprio (sempre logo abaixo do campo), substitui o datalist nativo ----------------
+  var MUNICIPIOS_RO_LISTA = ["Alta Floresta D'Oeste/RO","Alto Alegre dos Parecis/RO","Alto Paraíso/RO","Alvorada D'Oeste/RO","Ariquemes/RO","Buritis/RO","Cabixi/RO","Cacaulândia/RO","Cacoal/RO","Campo Novo de Rondônia/RO","Candeias do Jamari/RO","Castanheiras/RO","Cerejeiras/RO","Chupinguaia/RO","Colorado do Oeste/RO","Corumbiara/RO","Costa Marques/RO","Cujubim/RO","Espigão D'Oeste/RO","Governador Jorge Teixeira/RO","Guajará-Mirim/RO","Itapuã do Oeste/RO","Jaru/RO","Ji-Paraná/RO","Machadinho D'Oeste/RO","Ministro Andreazza/RO","Mirante da Serra/RO","Monte Negro/RO","Nova Brasilândia D'Oeste/RO","Nova Mamoré/RO","Nova União/RO","Novo Horizonte do Oeste/RO","Ouro Preto do Oeste/RO","Parecis/RO","Pimenta Bueno/RO","Pimenteiras do Oeste/RO","Porto Velho/RO","Presidente Médici/RO","Primavera de Rondônia/RO","Rio Crespo/RO","Rolim de Moura/RO","Santa Luzia D'Oeste/RO","São Felipe D'Oeste/RO","São Francisco do Guaporé/RO","São Miguel do Guaporé/RO","Seringueiras/RO","Teixeirópolis/RO","Theobroma/RO","Urupá/RO","Vale do Anari/RO","Vale do Paraíso/RO","Vilhena/RO"];
+
+  function normalizarTexto(s){
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  function configurarDropdownProprio(inputId, dropdownId, getLista, onEscolher){
+    var input = $(inputId);
+    var dropdown = $(dropdownId);
+
+    function render(){
+      var termo = normalizarTexto(input.value.trim());
+      dropdown.classList.remove('open');
+      dropdown.innerHTML = '';
+      var lista = getLista();
+      var alvo = termo
+        ? lista.filter(function(m){ return normalizarTexto(m).indexOf(termo) !== -1; }).slice(0, 8)
+        : lista.slice(0, 8); // campo vazio: mostra as primeiras sugestões disponíveis
+      if(!alvo.length) return;
+      dropdown.innerHTML = alvo.map(function(m){ return '<div class="opt">' + escapeHtml(m) + '</div>'; }).join('');
+      dropdown.classList.add('open');
+    }
+
+    input.addEventListener('input', render);
+    input.addEventListener('focus', render);
+    dropdown.addEventListener('mousedown', function(e){
+      var opt = e.target.closest('.opt');
+      if(!opt) return;
+      e.preventDefault(); // evita que o input perca o foco antes do clique ser processado
+      input.value = opt.textContent;
+      if(onEscolher) onEscolher(input.value);
+      dropdown.classList.remove('open');
+      dropdown.innerHTML = '';
+      input.blur();
+      recalc();
+      clearTimeout(kmAutoTimer);
+      calcularDistanciaAutomatica(); // calcula na hora, sem esperar debounce/blur de outros listeners
+    });
+    document.addEventListener('click', function(e){
+      if(e.target !== input && !dropdown.contains(e.target)) dropdown.classList.remove('open');
+    });
+  }
+
+  configurarDropdownProprio('f_origem', 'origemDropdown', function(){ return MUNICIPIOS_RO_LISTA; });
+  configurarDropdownProprio('f_destino', 'destinoDropdown', function(){
+    var destinosUnicos = destinosDigitados.slice();
+    cadastroRegistros.forEach(function(r){ if(r.destino && destinosUnicos.indexOf(r.destino) === -1) destinosUnicos.push(r.destino); });
+    todosMunicipiosBR.forEach(function(m){ if(destinosUnicos.indexOf(m) === -1) destinosUnicos.push(m); });
+    return destinosUnicos;
+  }, registrarDestinoDigitado);
+
+  function carregarTodosMunicipiosBR(){
+    if(municipiosBRCarregados) return;
+    municipiosBRCarregados = true; // evita tentar de novo a cada foco no campo
+    $('destinoMunicipiosStatus').textContent = 'Carregando lista de municípios do Brasil…';
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios')
+      .then(function(res){ if(!res.ok) throw new Error('ibge_falhou'); return res.json(); })
+      .then(function(data){
+        todosMunicipiosBR = data.map(function(m){
+          var uf = m.microrregiao && m.microrregiao.mesorregiao && m.microrregiao.mesorregiao.UF
+            ? m.microrregiao.mesorregiao.UF.sigla
+            : (m['regiao-imediata'] && m['regiao-imediata']['regiao-intermediaria'] && m['regiao-imediata']['regiao-intermediaria'].UF
+               ? m['regiao-imediata']['regiao-intermediaria'].UF.sigla : '');
+          return uf ? (m.nome + '/' + uf) : m.nome;
+        }).sort(function(a, b){ return a.localeCompare(b, 'pt-BR'); });
+        atualizarDestinosDatalist();
+        $('destinoMunicipiosStatus').textContent = '✓ ' + todosMunicipiosBR.length + ' municípios do Brasil (IBGE) disponíveis para busca no Destino.';
+      })
+      .catch(function(){
+        municipiosBRCarregados = false; // permite tentar de novo numa próxima vez
+        $('destinoMunicipiosStatus').textContent = '⚠ Não foi possível carregar a lista completa de municípios agora (sem internet ou acesso bloqueado). A busca continua funcionando com os destinos já digitados antes.';
+      });
+  }
+  $('f_destino').addEventListener('focus', carregarTodosMunicipiosBR);
+
+  function buscarCadastroPorNome(nomeDigitado){
+    var alvo = (nomeDigitado || '').trim().toLowerCase();
+    if(!alvo) return null;
+    // procura do mais recente para o mais antigo, para trazer o cadastro mais atual em caso de duplicidade
+    for(var i = cadastroRegistros.length - 1; i >= 0; i--){
+      if((cadastroRegistros[i].nome || '').trim().toLowerCase() === alvo) return cadastroRegistros[i];
+    }
+    return null;
+  }
+
+  function contarCadastrosPorNome(nomeDigitado){
+    var alvo = (nomeDigitado || '').trim().toLowerCase();
+    if(!alvo) return 0;
+    return cadastroRegistros.filter(function(r){ return (r.nome || '').trim().toLowerCase() === alvo; }).length;
+  }
+
+  $('f_nome').addEventListener('input', function(){
+    var match = buscarCadastroPorNome(this.value);
+    var hint = $('nomeMatchHint');
+    if(match){
+      $('f_cnpj').value = match.cnpj;
+      var qtd = contarCadastrosPorNome(this.value);
+      hint.innerHTML = '✓ Já existe no cadastro — ' + qtd + (qtd === 1 ? ' registro encontrado' : ' registros encontrados') + ' para este nome.';
+      hint.style.color = 'var(--green)';
+      recalc();
+    } else {
+      hint.textContent = '';
+    }
+  });
+
+  function renderCadastro(){
+    salvarCadastroLS();
+    atualizarNomesDatalist();
+    atualizarDestinosDatalist();
+    var body = $('cadastroBody');
+    if(cadastroRegistros.length === 0){
+      body.innerHTML = '<tr id="cadastroEmptyRow"><td colspan="10" style="text-align:center; font-style:italic; color:var(--ink-soft);">Nenhum registro adicionado ainda.</td></tr>';
+      return;
+    }
+    body.innerHTML = cadastroRegistros.map(function(r, i){
+      return '<tr data-row="' + i + '" style="cursor:pointer;" title="Clique para carregar este registro nos campos">' +
+        '<td style="text-align:left;">' + escapeHtml(r.nome) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.cnpj) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.ie) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.comando) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.nfe) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.placas) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.origem) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.destino) + '</td>' +
+        '<td style="text-align:left;">' + escapeHtml(r.in_vigor) + '</td>' +
+        '<td style="text-align:left;"><button class="btn ghost btn-sm" data-remove="' + i + '">remover</button></td>' +
+      '</tr>';
+    }).join('');
+  }
+  function salvarRegistroCadastro(){
+    cadastroRegistros.push({
+      nome: $('f_nome').value,
+      cnpj: $('f_cnpj').value,
+      ie: $('f_ie').value,
+      comando: $('f_comando').value,
+      nfe: $('f_nfe').value,
+      placas: $('f_placas').value,
+      origem: $('f_origem').value,
+      destino: $('f_destino').value,
+      in_vigor: $('f_in').value
+    });
+    renderCadastro();
+  }
+  $('btnAddCadastro').addEventListener('click', salvarRegistroCadastro);
+
+  function flashButton(btn, tempLabel){
+    var original = btn.textContent;
+    btn.classList.remove('is-active');
+    void btn.offsetWidth; // força reflow para reiniciar a animação em cliques seguidos
+    btn.classList.add('is-active');
+    if(tempLabel) btn.textContent = tempLabel;
+    setTimeout(function(){
+      btn.classList.remove('is-active');
+      if(tempLabel) btn.textContent = original;
+    }, 900);
+  }
+
+  var CAMPOS_IDENTIFICACAO = ['f_nome','f_cnpj','f_ie','f_auto','f_comando','f_nfe','f_placas','f_origem','f_destino'];
+
+  $('btnAddCadastroTop').addEventListener('click', function(){
+    salvarRegistroCadastro();
+    flashButton($('btnAddCadastroTop'), '✓ Registro salvo!');
+  });
+
+  // Limpar campos: esvazia apenas os campos de identificação/operação (Nome, CNPJ, IE, Comando, NF-e, Placas, Origem, Destino)
+  $('btnLimparCampos').addEventListener('click', function(){
+    CAMPOS_IDENTIFICACAO.forEach(function(id){ $(id).value = ''; });
+    $('f_km').value = '';
+    $('f_peso').value = '';
+    $('f_recolhido').value = '0';
+    $('kmCalcStatus').textContent = '';
+    $('nomeMatchHint').textContent = '';
+    // volta os seletores para o padrão
+    document.querySelector('#segColuna button[data-val="A"]').click();
+    document.querySelector('#segAliquota button[data-val="12"]').click();
+    document.querySelector('#segComRed button[data-val="nao"]').click();
+    document.querySelector('#segCredito button[data-val="nao"]').click();
+    recalc();
+    $('indiceAplicado').value = '';
+    buscarINVigente();
+    atualizarDieselAutomatico();
+    recalc();
+    flashButton($('btnLimparCampos'), '✓ Campos limpos!');
+  });
+
+  // Novo registro: reinicia todo o formulário (identificação + variáveis de cálculo) para um caso novo do zero
+  // ---------------- Busca automática da IN vigente ----------------
+  // Fonte: Sistema de Legislação SEFIN-RO — https://legislacao.sefin.ro.gov.br/detalhe?lei=3036
+  function extrairNumeroIN(html){
+    var numero = null;
+    try{
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var ogTitle = doc.querySelector('meta[property="og:title"]');
+      var conteudo = ogTitle ? ogTitle.getAttribute('content') : '';
+      var m = conteudo && conteudo.match(/(\d{1,3}\/\d{4})/);
+      if(m) numero = m[1];
+    } catch(e){ /* ignora e tenta o fallback abaixo */ }
+    if(!numero){
+      // Fallback 1: procura a meta tag direto no HTML bruto, caso o DOMParser falhe
+      var m2 = html.match(/og:title["'][^>]*content=["']IN\s*(\d{1,3}\/\d{4})["']/i);
+      if(m2) numero = m2[1];
+    }
+    if(!numero){
+      // Fallback 2: procura qualquer ocorrência de "IN nº/ano" solta no texto da página
+      var m3 = html.match(/\bIN[\s.º°]{0,3}(\d{1,3}\/\d{4})\b/i);
+      if(m3) numero = m3[1];
+    }
+    return numero;
+  }
+
+  function buscarINVigente(){
+    var hint = $('inStatusHint');
+    var urlOriginal = 'https://legislacao.sefin.ro.gov.br/detalhe?lei=3036';
+    // Várias rotas de acesso tentadas em sequência: direta e, se falhar, via proxies CORS públicos
+    var rotas = [
+      { nome:'direto', url: urlOriginal },
+      { nome:'allorigins', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(urlOriginal) },
+      { nome:'corsproxy', url: 'https://corsproxy.io/?url=' + encodeURIComponent(urlOriginal) },
+      { nome:'r.jina.ai', url: 'https://r.jina.ai/' + urlOriginal }
+    ];
+
+    if(hint) hint.textContent = 'Verificando IN vigente…';
+
+    function tentar(i){
+      if(i >= rotas.length){
+        if(hint) hint.textContent = '⚠ Não foi possível consultar a fonte por nenhuma via disponível agora (sem internet, ou acesso bloqueado). Mantendo o valor atual — confira manualmente em legislacao.sefin.ro.gov.br/detalhe?lei=3036.';
+        return;
+      }
+      var rota = rotas[i];
+      fetch(rota.url)
+        .then(function(res){ if(!res.ok) throw new Error('fetch_falhou'); return res.text(); })
+        .then(function(html){
+          var numero = extrairNumeroIN(html);
+          if(numero){
+            $('f_in').value = numero;
+            recalc();
+            if(hint) hint.textContent = '✓ IN ' + numero + ' confirmada em ' + new Date().toLocaleDateString('pt-BR') + ' (legislacao.sefin.ro.gov.br' + (rota.nome !== 'direto' ? ', via ' + rota.nome : '') + ').';
+          } else {
+            tentar(i + 1);
+          }
+        })
+        .catch(function(){ tentar(i + 1); });
+    }
+    tentar(0);
+  }
+
+  $('btnNovoRegistro').addEventListener('click', function(){
+    CAMPOS_IDENTIFICACAO.forEach(function(id){ $(id).value = ''; });
+    $('f_km').value = '';
+    $('f_peso').value = '';
+    $('f_recolhido').value = '0';
+    $('kmCalcStatus').textContent = '';
+    $('nomeMatchHint').textContent = '';
+    // volta os seletores para o padrão
+    document.querySelector('#segColuna button[data-val="A"]').click();
+    document.querySelector('#segAliquota button[data-val="12"]').click();
+    document.querySelector('#segComRed button[data-val="nao"]').click();
+    document.querySelector('#segCredito button[data-val="nao"]').click();
+    recalc();
+    $('indiceAplicado').value = '';
+    buscarINVigente();
+    atualizarDieselAutomatico();
+    recalc();
+    flashButton($('btnNovoRegistro'), '✓ Novo registro!');
+  });
+
+  $('cadastroBody').addEventListener('click', function(e){
+    var btn = e.target.closest('[data-remove]');
+    if(btn){
+      cadastroRegistros.splice(parseInt(btn.dataset.remove, 10), 1);
+      renderCadastro();
+      return;
+    }
+    var row = e.target.closest('tr[data-row]');
+    if(!row) return;
+    var r = cadastroRegistros[parseInt(row.dataset.row, 10)];
+    if(!r) return;
+    $('cadastroBody').querySelectorAll('tr[data-row]').forEach(function(tr){ tr.classList.remove('row-selected'); });
+    row.classList.add('row-selected');
+    $('f_nome').value = r.nome;
+    $('f_cnpj').value = r.cnpj;
+    $('f_ie').value = r.ie;
+    $('f_comando').value = r.comando;
+    $('f_nfe').value = r.nfe;
+    $('f_placas').value = r.placas;
+    $('f_origem').value = r.origem;
+    $('f_destino').value = r.destino;
+    if(r.in_vigor) $('f_in').value = r.in_vigor;
+    recalc();
+    agendarCalculoAutomatico();
+  });
+
+  recalc();
+  renderCadastro();
+  carregarTodosMunicipiosBR();
+  buscarINVigente();
+
+  // Ao abrir o app: limpa os campos preenchidos manualmente (mantém a tela pronta para um caso novo)
+  // e atualiza os campos automáticos (diesel, IN) com os dados mais recentes.
+  (function limparEAtualizarNaAbertura(){
+    CAMPOS_IDENTIFICACAO.forEach(function(id){ $(id).value = ''; });
+    $('f_km').value = '';
+    $('f_peso').value = '';
+    $('f_recolhido').value = '0';
+    $('indiceAplicado').value = '';
+    $('kmCalcStatus').textContent = '';
+    $('nomeMatchHint').textContent = '';
+    document.querySelector('#segColuna button[data-val="A"]').click();
+    document.querySelector('#segAliquota button[data-val="12"]').click();
+    document.querySelector('#segComRed button[data-val="nao"]').click();
+    document.querySelector('#segCredito button[data-val="nao"]').click();
+    atualizarDieselAutomatico();
+    recalc();
+  })();
+
+})();
+</script>
+</body>
+</html>
